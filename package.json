@@ -1,0 +1,13 @@
+{
+  "name": "tony-command-center",
+  "version": "0.1.0",
+  "private": true,
+  "description": "T.O.N.Y. personal command center and agentic brain.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "check": "node --check src/server.js && node --test"
+  }
+}
