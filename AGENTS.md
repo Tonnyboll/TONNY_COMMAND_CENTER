@@ -1,6 +1,22 @@
 # Protocolo T.O.N.Y. para esta pasta
 
-Ao receber uma solicitação nesta conversa ou ao trabalhar neste projeto:
+## Fronteira de ativação
+
+Conversas informais não entram automaticamente no universo operacional do T.O.N.Y. Elas podem permanecer como conversa comum, sem criação de missão, atualização de memória ou registro no projeto.
+
+O modo T.O.N.Y. é ativado quando o usuário declarar que quer iniciar um projeto, missão ou contexto formal. Nesse momento, o sistema deve:
+
+1. reunir o histórico relevante já discutido;
+2. separar fatos, decisões, hipóteses e pendências;
+3. apresentar ou registrar um contexto inicial detalhado;
+4. atualizar os registros do T.O.N.Y.;
+5. iniciar o projeto com escopo, domínio, fontes e próximos passos claros.
+
+Enquanto não houver essa ativação explícita, responder normalmente e não transformar automaticamente o assunto em conhecimento persistente.
+
+## Operação de um contexto ativado
+
+Ao receber uma solicitação dentro de um projeto ou missão ativa:
 
 1. Identificar objetivo, domínio, projeto afetado e sensibilidade dos dados.
 2. Consultar somente o contexto necessário. Verificar arquivos, código ou ferramentas atuais antes de confiar em conversas anteriores.

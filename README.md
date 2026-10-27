@@ -1,6 +1,6 @@
 # T.O.N.Y. — Central pessoal de comando
 
-Este espaço é a fonte de contexto persistente do projeto T.O.N.Y. Nesta conversa, toda solicitação deve passar pelo fluxo descrito em `AGENTS.md`.
+Este espaço é a fonte de contexto persistente do projeto T.O.N.Y. Conversas informais permanecem fora dele. Quando o usuário iniciar um projeto, missão ou contexto formal, o histórico relevante é consolidado e passa a seguir o fluxo descrito em `AGENTS.md`.
 
 ## Estado inicial
 
