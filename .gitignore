@@ -1,0 +1,26 @@
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# Ambiente e caches
+.venv/
+venv/
+node_modules/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+
+# Arquivos locais do sistema/editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Saídas temporárias
+tmp/
+work/
+*.log
