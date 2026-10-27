@@ -43,6 +43,15 @@ const DEFAULT_AGENTS = [
     costLevel: "medium",
     parallelizable: true,
     confidenceRequired: "medium"
+  },
+  {
+    id: "implementation-agent",
+    domain: "technology",
+    capabilities: ["code_implementation", "test_execution", "documentation_update"],
+    tools: ["filesystem", "code_analysis", "test_runner"],
+    costLevel: "medium",
+    parallelizable: false,
+    confidenceRequired: "high"
   }
 ];
 
@@ -53,9 +62,11 @@ export class AgentRegistry {
 
   async ensureDefaults() {
     const state = this.store.snapshot();
-    if (state.agents.length > 0) return state.agents;
+    const existingIds = new Set(state.agents.map((agent) => agent.id));
+    const missing = DEFAULT_AGENTS.filter((agent) => !existingIds.has(agent.id));
+    if (missing.length === 0) return state.agents;
     await this.store.update((data) => {
-      data.agents.push(...DEFAULT_AGENTS.map((agent) => ({ ...agent })));
+      data.agents.push(...missing.map((agent) => ({ ...agent })));
       return data.agents;
     });
     return this.store.snapshot().agents;
@@ -85,6 +96,18 @@ export class AgentRegistry {
       }))
       .filter((item) => item.score > 0)
       .sort((left, right) => right.score - left.score)
+      .map((item) => item.agent);
+  }
+
+  findBestForCapabilities(capabilities = []) {
+    const required = new Set(capabilities);
+    return this.list()
+      .map((agent) => ({
+        agent,
+        score: [...required].filter((capability) => agent.capabilities?.includes(capability)).length
+      }))
+      .filter((item) => item.score > 0)
+      .sort((left, right) => right.score - left.score || left.agent.id.localeCompare(right.agent.id))
       .map((item) => item.agent);
   }
 }

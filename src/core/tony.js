@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { EmptyKnowledgeLayer } from "./knowledge.js";
+import { MissionOrchestrator } from "./orchestrator.js";
 import { AgentRegistry } from "./registry.js";
 import { PolicyLayer } from "./policy.js";
 import { IntentRouter } from "./router.js";
@@ -13,12 +14,13 @@ function now() {
 }
 
 export class TonyCore {
-  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter(), policy = new PolicyLayer(), knowledge = new EmptyKnowledgeLayer() }) {
+  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter(), policy = new PolicyLayer(), knowledge = new EmptyKnowledgeLayer(), orchestrator = null }) {
     this.store = store;
     this.registry = registry;
     this.router = router;
     this.policy = policy;
     this.knowledge = knowledge;
+    this.orchestrator = orchestrator || new MissionOrchestrator({ registry: this.registry });
   }
 
   async initialize() {
@@ -30,7 +32,10 @@ export class TonyCore {
   async handleMessage({ message, history = [], activeProjectId = null } = {}) {
     const state = this.store.snapshot();
     const activeProject = state.projects.find((project) => project.id === activeProjectId);
-    const intent = this.router.route(message, { activeProject });
+    const intent = this.router.route(message, {
+      activeProject,
+      knownProjects: this.knowledge.projects ? this.knowledge.projects() : []
+    });
 
     if (intent.type === "empty") {
       return { state: "ANALISADO", mode: "informal", persisted: false, intent };
@@ -58,7 +63,8 @@ export class TonyCore {
       const mission = await this.createMission({
         projectId: activeProject.id,
         objective: message,
-        sourceMessage: message
+        sourceMessage: message,
+        project: activeProject
       });
       return {
         state: "PLANEJADO",
@@ -67,7 +73,7 @@ export class TonyCore {
         project: activeProject,
         mission,
         intent,
-        message: "Missão registrada e pronta para execução."
+        message: "Missão arquitetada, agents selecionados e pronta para execução."
       };
     }
 
@@ -97,6 +103,14 @@ export class TonyCore {
       createdAt: timestamp,
       updatedAt: timestamp
     };
+    const orchestration = this.orchestrator.plan({
+      objective: message,
+      project,
+      context: project.context,
+      knowledge: project.knowledge,
+      activation: true
+    });
+    project.orchestration = orchestration;
     const mission = {
       id: id("mission"),
       projectId: project.id,
@@ -104,6 +118,7 @@ export class TonyCore {
       status: "PLANNED",
       stateLabel: "PLANEJADO",
       source: "explicit project activation",
+      orchestration,
       createdAt: timestamp,
       updatedAt: timestamp
     };
@@ -130,13 +145,26 @@ export class TonyCore {
     };
   }
 
-  async createMission({ projectId, objective, sourceMessage }) {
+  async createMission({ projectId, objective, sourceMessage, project = null }) {
     const timestamp = now();
+    const activeProject = project || this.store.snapshot().projects.find((item) => item.id === projectId);
+    const knowledge = this.knowledge.contextFor({
+      query: `${activeProject?.name || ""} ${objective}`,
+      domain: activeProject?.domain,
+      project: activeProject?.name
+    });
+    const orchestration = this.orchestrator.plan({
+      objective,
+      project: activeProject,
+      context: activeProject?.context,
+      knowledge
+    });
     const mission = {
       id: id("mission"),
       projectId,
       objective,
       sourceMessage,
+      orchestration,
       status: "PLANNED",
       stateLabel: "PLANEJADO",
       createdAt: timestamp,
@@ -144,7 +172,7 @@ export class TonyCore {
     };
     await this.store.update((data) => {
       data.missions.push(mission);
-      data.audit.push({ id: id("audit"), type: "mission_created", projectId, missionId: mission.id, timestamp });
+      data.audit.push({ id: id("audit"), type: "mission_created", projectId, missionId: mission.id, orchestration, timestamp });
     });
     return mission;
   }

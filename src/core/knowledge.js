@@ -40,18 +40,36 @@ export class KnowledgeLayer {
     return this.privateData.sources || [];
   }
 
+  projects() {
+    const names = this.entries().flatMap((entry) => [
+      entry.project,
+      ...(entry.projects || [])
+    ]);
+    return [...new Set(names.filter(Boolean))];
+  }
+
   search(query = "", { domain, project } = {}) {
     const queryTokens = tokens(query);
     return this.entries()
-      .filter((entry) => !domain || entry.domain === domain || entry.domains?.includes(domain))
-      .filter((entry) => !project || !entry.projects || entry.projects.includes(project))
+      .filter((entry) => {
+        const requested = normalize(project);
+        const names = [entry.project, ...(entry.projects || [])]
+          .filter(Boolean)
+          .map(normalize);
+        const projectMatch = !project || names.length === 0 || names.some((name) => name === requested || name.includes(requested) || requested.includes(name));
+        if (!projectMatch) return false;
+        // Quando o projeto é identificado, sua evidência tem prioridade sobre
+        // o domínio inferido a partir de uma frase curta.
+        if (project && names.length > 0) return true;
+        return !domain || entry.domain === domain || entry.domains?.includes(domain);
+      })
       .map((entry) => {
         const haystack = tokens([entry.title, entry.summary, ...(entry.tags || []), ...(entry.sources || [])].join(" "));
         const score = queryTokens.filter((token) => haystack.includes(token)).length;
         return { entry, score };
       })
       .filter((item) => queryTokens.length === 0 || item.score > 0)
-      .sort((left, right) => right.score - left.score || left.entry.title.localeCompare(right.entry.title))
+      .sort((left, right) => right.score - left.score || String(left.entry.title || left.entry.id || "").localeCompare(String(right.entry.title || right.entry.id || "")))
       .map((item) => item.entry);
   }
 
@@ -71,6 +89,7 @@ export class EmptyKnowledgeLayer {
   async init() { return this; }
   entries() { return []; }
   sources() { return []; }
+  projects() { return []; }
   search() { return []; }
   contextFor({ query = "", domain, project } = {}) {
     return { query, domain, project, entries: [], sourceCount: 0, state: "ANALISADO" };

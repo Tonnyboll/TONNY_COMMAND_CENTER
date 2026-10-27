@@ -36,6 +36,9 @@ button { border: 0; border-radius: 9px; padding: 12px 18px; color: #06221d; back
 .activity-list { padding: 12px 20px; }
 .activity-row { padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 .activity-row span { color: var(--muted); font-size: 11px; }
+.orchestration { padding: 12px 20px 20px; }
+.plan-row { display: grid; gap: 4px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.plan-row span { color: var(--muted); font-size: 12px; line-height: 1.4; }
 @media (max-width: 900px) { .cards { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) { .cards, .workspace { grid-template-columns: 1fr 1fr; } .workspace { display: block; } .activity-panel { margin-top: 16px; } }
 @media (max-width: 480px) { .cards { grid-template-columns: 1fr 1fr; } .shell { padding-top: 24px; } }

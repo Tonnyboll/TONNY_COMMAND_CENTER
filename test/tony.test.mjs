@@ -3,7 +3,7 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
-import { JsonStore } from "../src/core/store.js";
+import { EMPTY_STATE, JsonStore } from "../src/core/store.js";
 import { KnowledgeLayer } from "../src/core/knowledge.js";
 import { TonyCore } from "../src/core/tony.js";
 import { evaluateQuality } from "../src/core/quality-gate.js";
@@ -27,6 +27,19 @@ test("informal conversation is not persisted", async () => {
     assert.equal(state.audit.length, 0);
   } finally {
     await cleanup();
+  }
+});
+
+test("agent registry backfills new default agents in an existing store", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "tony-registry-"));
+  try {
+    const seed = { ...EMPTY_STATE, agents: [{ id: "architect-review", domain: "software_architecture" }] };
+    const store = await new JsonStore(path.join(directory, "tony.json"), seed).init();
+    const core = await new TonyCore({ store }).initialize();
+    assert.ok(store.snapshot().agents.some((agent) => agent.id === "implementation-agent"));
+    assert.equal(core.registry.list().length, 6);
+  } finally {
+    await rm(directory, { recursive: true, force: true });
   }
 });
 
@@ -62,8 +75,72 @@ test("action inside active project becomes a planned mission", async () => {
     });
     assert.equal(result.state, "PLANEJADO");
     assert.equal(result.mission.projectId, activation.project.id);
+    assert.equal(result.mission.orchestration.type, "architectural-orchestration");
+    assert.ok(result.mission.orchestration.agents.some((agent) => agent.id === "architect-review"));
   } finally {
     await cleanup();
+  }
+});
+
+test("orchestrator derives impact and selects agents for an implementation", async () => {
+  const { core, cleanup } = await makeCore();
+  try {
+    const result = await core.handleMessage({
+      message: "TONY, iniciar projeto sobre ajuste da API do Félix com homologação e segurança."
+    });
+    const agentIds = result.mission.orchestration.agents.map((agent) => agent.id);
+    assert.equal(result.mission.orchestration.state, "PLANEJADO");
+    assert.deepEqual(result.mission.orchestration.impact.areas, [
+      "API, contrato e integrações",
+      "segurança, permissões e risco",
+      "testes, validação e entrega"
+    ]);
+    assert.ok(agentIds.includes("architect-review"));
+    assert.ok(agentIds.includes("api-reviewer"));
+    assert.ok(agentIds.includes("security-auditor"));
+    assert.ok(agentIds.includes("qa-specialist"));
+    assert.ok(agentIds.includes("implementation-agent"));
+    assert.equal(result.mission.orchestration.requiresConfirmation, false);
+  } finally {
+    await cleanup();
+  }
+});
+
+test("project context takes priority when the inferred message domain is imprecise", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "tony-project-context-"));
+  try {
+    const store = await new JsonStore(path.join(directory, "tony.json")).init();
+    const knowledge = await new KnowledgeLayer({
+      publicFile: path.join(directory, "missing-public.json"),
+      privateFile: path.join(directory, "private.json")
+    }).init();
+    await writeFile(path.join(directory, "private.json"), JSON.stringify({
+      entries: [
+        {
+          id: "hunter-context",
+          project: "TONY Hunter",
+          domain: "research",
+          tags: ["read-only", "risk"],
+          summary: "Pesquisa somente leitura com evidências e cobertura de fontes.",
+          sources: ["hunter/docs/ARCHITECTURE.md"]
+        },
+        {
+          id: "hunter-evidence",
+          project: "TONY Hunter",
+          domain: "research",
+          summary: "Cobertura de fontes e falhas registradas.",
+          sources: ["hunter/tests/test_event_pipeline.py"]
+        }
+      ]
+    }));
+    await knowledge.init();
+    const core = await new TonyCore({ store, knowledge }).initialize();
+    const result = await core.handleMessage({ message: "TONY, iniciar projeto sobre ajuste no Hunter." });
+    assert.equal(result.project.name, "TONY Hunter");
+    assert.equal(result.project.knowledge.entries[0].id, "hunter-context");
+    assert.equal(result.project.knowledge.state, "ANALISADO");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
   }
 });
 

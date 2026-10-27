@@ -1,5 +1,5 @@
 const ACTIVATION_PATTERN = /\b(iniciar|começar|comecar|criar|abrir|ativar)\b[\s\S]{0,80}\b(projeto|missão|missao|contexto)\b/i;
-const ACTION_PATTERN = /\b(verifica|verificar|analisa|analisar|investiga|investigar|implementa|implementar|corrige|corrigir|revisa|revisar|planeja|planejar|executa|executar|olha)\b/i;
+const ACTION_PATTERN = /\b(verifica|verificar|analisa|analisar|investiga|investigar|implementa|implementar|corrige|corrigir|revisa|revisar|planeja|planejar|executa|executar|olha|ajuste|ajustar|altera|alterar|modifica|modificar|homologa|homologar|evolui|evoluir|refatora|refatorar)\b/i;
 
 function cleanName(value) {
   return value
@@ -19,7 +19,17 @@ function inferDomain(message) {
   return "general";
 }
 
-function inferProjectName(message) {
+function inferProjectName(message, { knownProjects = [] } = {}) {
+  const normalizedMessage = message.toLocaleLowerCase("pt-BR");
+  const ignoredProjectTokens = new Set(["tony", "api", "command", "center", "studios"]);
+  const knownProject = knownProjects.find((project) => {
+    const projectTokens = String(project)
+      .toLocaleLowerCase("pt-BR")
+      .split(/[^\p{L}\p{N}]+/u)
+      .filter((token) => token.length > 3 && !ignoredProjectTokens.has(token));
+    return projectTokens.some((token) => normalizedMessage.includes(token));
+  });
+  if (knownProject) return knownProject;
   const match = message.match(/\b(?:sobre|de|para)\s+(.+)$/i);
   if (match) return cleanName(match[1]) || "Novo projeto";
   return "Novo projeto";
@@ -30,14 +40,14 @@ function messageText(item) {
 }
 
 export class IntentRouter {
-  route(message, { activeProject } = {}) {
+  route(message, { activeProject, knownProjects = [] } = {}) {
     const text = String(message ?? "").trim();
     if (!text) return { type: "empty", domain: "general" };
     if (ACTIVATION_PATTERN.test(text)) {
       return {
         type: "activate_project",
         domain: inferDomain(text),
-        projectName: inferProjectName(text)
+        projectName: inferProjectName(text, { knownProjects })
       };
     }
     if (activeProject && ACTION_PATTERN.test(text)) {
