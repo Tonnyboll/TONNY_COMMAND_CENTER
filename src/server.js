@@ -37,7 +37,7 @@ async function readBody(request) {
 async function serveStatic(response, pathname) {
   const requested = pathname === "/" ? "/index.html" : pathname;
   const filePath = path.resolve(publicDir, `.${requested}`);
-  if (!filePath.startsWith(publicDir)) return false;
+  if (filePath !== publicDir && !filePath.startsWith(`${publicDir}${path.sep}`)) return false;
   try {
     const content = await fs.readFile(filePath);
     response.writeHead(200, { "content-type": contentTypes[path.extname(filePath)] || "application/octet-stream" });
@@ -59,9 +59,19 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "GET" && url.pathname === "/api/projects") return sendJson(response, 200, store.snapshot().projects);
     if (request.method === "GET" && url.pathname === "/api/agents") return sendJson(response, 200, store.snapshot().agents);
     if (request.method === "GET" && url.pathname === "/api/missions") return sendJson(response, 200, store.snapshot().missions);
+    if (request.method === "GET" && url.pathname === "/api/decisions") return sendJson(response, 200, store.snapshot().decisions);
+    if (request.method === "GET" && url.pathname === "/api/audit") return sendJson(response, 200, store.snapshot().audit);
     if (request.method === "POST" && url.pathname === "/api/messages") {
       const body = await readBody(request);
       return sendJson(response, 200, await core.handleMessage(body));
+    }
+    if (request.method === "POST" && url.pathname === "/api/tool-requests") {
+      const body = await readBody(request);
+      return sendJson(response, 200, await core.requestTool(body));
+    }
+    if (request.method === "POST" && url.pathname === "/api/decisions") {
+      const body = await readBody(request);
+      return sendJson(response, 200, await core.recordDecision(body));
     }
     if (request.method === "GET" && await serveStatic(response, url.pathname)) return;
     sendJson(response, 404, { error: "Not found" });

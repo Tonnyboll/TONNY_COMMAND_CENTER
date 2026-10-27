@@ -80,3 +80,58 @@ test("quality gate flags unresolved high risk findings", () => {
   assert.equal(result.status, "NEEDS_ATTENTION");
   assert.equal(result.label, "FALHOU");
 });
+
+test("policy requires confirmation for write actions and records the request", async () => {
+  const { core, store, cleanup } = await makeCore();
+  try {
+    const activation = await core.handleMessage({ message: "TONY, iniciar projeto sobre publicação do site." });
+    const result = await core.requestTool({
+      projectId: activation.project.id,
+      tool: "github",
+      action: "merge",
+      parameters: { branch: "feature/test" }
+    });
+    assert.equal(result.state, "AGUARDANDO CONFIRMAÇÃO");
+    assert.equal(result.request.execution, "NOT_EXECUTED");
+    assert.equal(store.snapshot().audit.at(-1).type, "tool_request");
+  } finally {
+    await cleanup();
+  }
+});
+
+test("explicit confirmation authorizes policy without pretending execution", async () => {
+  const { core, cleanup } = await makeCore();
+  try {
+    const activation = await core.handleMessage({ message: "TONY, iniciar projeto sobre consulta de saúde." });
+    const result = await core.requestTool({
+      projectId: activation.project.id,
+      tool: "calendar",
+      action: "create",
+      confirmed: true
+    });
+    assert.equal(result.state, "PLANEJADO");
+    assert.equal(result.request.policy.status, "AUTHORIZED");
+    assert.equal(result.request.execution, "NOT_EXECUTED");
+  } finally {
+    await cleanup();
+  }
+});
+
+test("decisions are scoped to an active project", async () => {
+  const { core, store, cleanup } = await makeCore();
+  try {
+    const activation = await core.handleMessage({ message: "TONY, iniciar projeto sobre arquitetura do Félix." });
+    const result = await core.recordDecision({
+      projectId: activation.project.id,
+      title: "Contrato primeiro",
+      decision: "Começar pelo contrato atual da API.",
+      reason: "Reduzir divergência entre implementação e documentação.",
+      evidence: ["conversation:activation"],
+      impact: "Define a ordem da primeira missão."
+    });
+    assert.equal(result.state, "EXECUTADO");
+    assert.equal(store.snapshot().decisions[0].projectId, activation.project.id);
+  } finally {
+    await cleanup();
+  }
+});

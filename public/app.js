@@ -22,7 +22,11 @@ function renderActivity(items = []) {
   for (const item of items) {
     const row = document.createElement("div");
     row.className = "activity-row";
-    row.innerHTML = `<strong>${item.type}</strong><span>${new Date(item.timestamp).toLocaleString("pt-BR")}</span>`;
+    const type = document.createElement("strong");
+    type.textContent = item.type;
+    const timestamp = document.createElement("span");
+    timestamp.textContent = new Date(item.timestamp).toLocaleString("pt-BR");
+    row.append(type, timestamp);
     target.appendChild(row);
   }
 }

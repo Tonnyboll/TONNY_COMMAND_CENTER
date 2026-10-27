@@ -1,5 +1,6 @@
 import crypto from "node:crypto";
 import { AgentRegistry } from "./registry.js";
+import { PolicyLayer } from "./policy.js";
 import { IntentRouter } from "./router.js";
 
 function id(prefix) {
@@ -11,10 +12,11 @@ function now() {
 }
 
 export class TonyCore {
-  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter() }) {
+  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter(), policy = new PolicyLayer() }) {
     this.store = store;
     this.registry = registry;
     this.router = router;
+    this.policy = policy;
   }
 
   async initialize() {
@@ -137,6 +139,56 @@ export class TonyCore {
       data.audit.push({ id: id("audit"), type: "mission_created", projectId, missionId: mission.id, timestamp });
     });
     return mission;
+  }
+
+  async requestTool({ projectId, tool, action, parameters = {}, confirmed = false } = {}) {
+    const project = this.store.snapshot().projects.find((item) => item.id === projectId);
+    if (!project) return { state: "FALHOU", error: "Project not found." };
+    const decision = this.policy.evaluate({ tool, action, confirmed });
+    const timestamp = now();
+    const request = {
+      id: id("tool"),
+      projectId,
+      tool,
+      action,
+      parameters,
+      policy: decision,
+      execution: "NOT_EXECUTED",
+      createdAt: timestamp
+    };
+    await this.store.update((data) => {
+      data.audit.push({ id: id("audit"), type: "tool_request", projectId, request, timestamp });
+    });
+    return {
+      state: decision.status === "CONFIRMATION_REQUIRED" ? "AGUARDANDO CONFIRMAÇÃO" : decision.allowed ? "PLANEJADO" : "FALHOU",
+      request,
+      message: decision.allowed
+        ? "A política autorizou a solicitação, mas nenhuma ferramenta externa foi executada nesta versão."
+        : decision.reason
+    };
+  }
+
+  async recordDecision({ projectId, title, decision, reason = "", evidence = [], impact = "" } = {}) {
+    const project = this.store.snapshot().projects.find((item) => item.id === projectId);
+    if (!project) return { state: "FALHOU", error: "Project not found." };
+    const timestamp = now();
+    const record = {
+      id: id("decision"),
+      projectId,
+      title,
+      decision,
+      reason,
+      evidence,
+      impact,
+      status: "ACTIVE",
+      createdAt: timestamp,
+      updatedAt: timestamp
+    };
+    await this.store.update((data) => {
+      data.decisions.push(record);
+      data.audit.push({ id: id("audit"), type: "decision_recorded", projectId, decisionId: record.id, timestamp });
+    });
+    return { state: "EXECUTADO", decision: record, message: "Decisão registrada no contexto do projeto." };
   }
 
   dashboard() {

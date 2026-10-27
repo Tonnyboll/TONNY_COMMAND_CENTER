@@ -18,3 +18,17 @@ Este espaço é a fonte de contexto persistente do projeto T.O.N.Y. Conversas in
 ## Próximo marco
 
 Executar as primeiras missões reais pelo protocolo, registrar fontes e decisões, e então escolher a primeira integração com base em uma necessidade concreta.
+
+## MVP executável
+
+O primeiro núcleo funcional já está disponível na branch de feature:
+
+- Core com ativação explícita de projeto;
+- roteamento entre conversa informal e contexto ativo;
+- registro de projetos, missões, decisões e auditoria;
+- Agent Registry inicial;
+- camada de política para separar solicitação, autorização e execução;
+- Quality Gate verificável;
+- painel local em `http://localhost:3030`.
+
+Esta versão não executa ferramentas externas. Ela registra solicitações e deixa o estado real explícito para que as integrações sejam adicionadas com segurança.
