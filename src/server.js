@@ -2,16 +2,22 @@ import http from "node:http";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { KnowledgeLayer } from "./core/knowledge.js";
 import { JsonStore } from "./core/store.js";
 import { TonyCore } from "./core/tony.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const publicDir = path.join(root, "public");
 const dataFile = process.env.TONY_DATA_FILE || path.join(root, "data", "tony.json");
+const privateKnowledgeFile = process.env.TONY_PRIVATE_KNOWLEDGE_FILE || path.join(root, "data", "knowledge", "private-curated.json");
 const port = Number(process.env.PORT || 3030);
 
 const store = await new JsonStore(dataFile).init();
-const core = await new TonyCore({ store }).initialize();
+const knowledge = new KnowledgeLayer({
+  publicFile: path.join(root, "knowledge", "curated.json"),
+  privateFile: privateKnowledgeFile
+});
+const core = await new TonyCore({ store, knowledge }).initialize();
 
 const contentTypes = {
   ".html": "text/html; charset=utf-8",
@@ -61,6 +67,13 @@ const server = http.createServer(async (request, response) => {
     if (request.method === "GET" && url.pathname === "/api/missions") return sendJson(response, 200, store.snapshot().missions);
     if (request.method === "GET" && url.pathname === "/api/decisions") return sendJson(response, 200, store.snapshot().decisions);
     if (request.method === "GET" && url.pathname === "/api/audit") return sendJson(response, 200, store.snapshot().audit);
+    if (request.method === "GET" && url.pathname === "/api/knowledge") {
+      return sendJson(response, 200, core.knowledge.contextFor({
+        query: url.searchParams.get("q") || "",
+        domain: url.searchParams.get("domain") || undefined,
+        project: url.searchParams.get("project") || undefined
+      }));
+    }
     if (request.method === "POST" && url.pathname === "/api/messages") {
       const body = await readBody(request);
       return sendJson(response, 200, await core.handleMessage(body));

@@ -41,6 +41,7 @@ async function refresh() {
   $("#projects").textContent = dashboard.projects;
   $("#missions").textContent = dashboard.missions;
   $("#audit").textContent = dashboard.auditEvents;
+  $("#knowledge").textContent = dashboard.knowledgeEntries;
   renderActivity(dashboard.recentActivity);
 }
 

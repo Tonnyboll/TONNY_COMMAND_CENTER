@@ -26,6 +26,7 @@ O primeiro núcleo funcional já está disponível na branch de feature:
 - Core com ativação explícita de projeto;
 - roteamento entre conversa informal e contexto ativo;
 - registro de projetos, missões, decisões e auditoria;
+- Knowledge Layer com padrões curados e catálogo privado local;
 - Agent Registry inicial;
 - camada de política para separar solicitação, autorização e execução;
 - Quality Gate verificável;

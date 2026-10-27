@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 import { JsonStore } from "../src/core/store.js";
+import { KnowledgeLayer } from "../src/core/knowledge.js";
 import { TonyCore } from "../src/core/tony.js";
 import { evaluateQuality } from "../src/core/quality-gate.js";
 
@@ -133,5 +134,23 @@ test("decisions are scoped to an active project", async () => {
     assert.equal(store.snapshot().decisions[0].projectId, activation.project.id);
   } finally {
     await cleanup();
+  }
+});
+
+test("knowledge layer searches curated patterns without exposing raw source", async () => {
+  const directory = await mkdtemp(path.join(os.tmpdir(), "tony-knowledge-"));
+  try {
+    await writeFile(path.join(directory, "public.json"), JSON.stringify({ entries: [
+      { id: "gate", title: "Quality gate", domain: "quality", tags: ["evidence"], summary: "Require evidence before approval." }
+    ] }));
+    const knowledge = await new KnowledgeLayer({
+      publicFile: path.join(directory, "public.json"),
+      privateFile: path.join(directory, "missing-private.json")
+    }).init();
+    const result = knowledge.contextFor({ query: "evidence", domain: "quality" });
+    assert.equal(result.entries[0].id, "gate");
+    assert.equal(result.state, "ANALISADO");
+  } finally {
+    await rm(directory, { recursive: true, force: true });
   }
 });

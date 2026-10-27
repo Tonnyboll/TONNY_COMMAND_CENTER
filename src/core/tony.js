@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { EmptyKnowledgeLayer } from "./knowledge.js";
 import { AgentRegistry } from "./registry.js";
 import { PolicyLayer } from "./policy.js";
 import { IntentRouter } from "./router.js";
@@ -12,14 +13,16 @@ function now() {
 }
 
 export class TonyCore {
-  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter(), policy = new PolicyLayer() }) {
+  constructor({ store, registry = new AgentRegistry(store), router = new IntentRouter(), policy = new PolicyLayer(), knowledge = new EmptyKnowledgeLayer() }) {
     this.store = store;
     this.registry = registry;
     this.router = router;
     this.policy = policy;
+    this.knowledge = knowledge;
   }
 
   async initialize() {
+    await this.knowledge.init();
     await this.registry.ensureDefaults();
     return this;
   }
@@ -86,6 +89,11 @@ export class TonyCore {
       domain: intent.domain,
       status: "active",
       context: this.router.buildContextSnapshot(history, message),
+      knowledge: this.knowledge.contextFor({
+        query: `${intent.projectName} ${message}`,
+        domain: intent.domain,
+        project: intent.projectName
+      }),
       createdAt: timestamp,
       updatedAt: timestamp
     };
@@ -200,6 +208,8 @@ export class TonyCore {
       missions: data.missions.length,
       decisions: data.decisions.length,
       auditEvents: data.audit.length,
+      knowledgeEntries: this.knowledge.entries().length,
+      knowledgeSources: this.knowledge.sources().length,
       activeProjects: data.projects.filter((project) => project.status === "active").length,
       recentActivity: data.audit.slice(-10).reverse()
     };
