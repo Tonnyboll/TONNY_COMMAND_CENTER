@@ -162,3 +162,18 @@ Usar o mesmo episódio curto e medir:
 7. licença e possibilidade de uso nos braços Kids e Félix sem misturar contextos.
 
 Até esse benchmark, os projetos ficam registrados como **AVALIADA** ou **EM TESTE**; nenhum deve ser marcado como **CONECTADA**.
+
+## Operação token-aware e contratos v1
+
+O contrato canônico de entrada, saída, cache, orçamento de tokens/GPU e troca de adaptadores está em [`projects/TONY_TOKEN_AWARE_AGENT_CONTRACTS.md`](./TONY_TOKEN_AWARE_AGENT_CONTRACTS.md).
+
+Resumo operacional:
+
+- o T.O.N.Y. recebe referências e manifests, não o vídeo bruto em cada etapa;
+- agentes decidem por função e retornam JSON compacto;
+- render, codec, cortes e análise objetiva ficam em workers determinísticos;
+- GPU local, GPU em nuvem e ausência de GPU são estados explícitos do job;
+- o piloto Kids limita o vídeo final a 2 minutos e exige QA antes da aprovação humana;
+- o mesmo agente pode atender outro braço somente com `route`, DNA e ativos explicitamente trocados.
+
+Esse contrato não aprova automaticamente nenhuma ferramenta. A shortlist e o estado de cada capacidade continuam registrados neste catálogo.
