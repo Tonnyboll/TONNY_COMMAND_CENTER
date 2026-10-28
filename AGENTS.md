@@ -26,7 +26,7 @@ Ao receber uma solicitação dentro de um projeto ou missão ativa:
 1. Identificar objetivo, domínio, projeto afetado e sensibilidade dos dados.
 2. Consultar somente o contexto necessário. Verificar arquivos, código ou ferramentas atuais antes de confiar em conversas anteriores.
 3. Escolher a menor execução suficiente. Usar especialistas apenas quando a tarefa exigir e quando estiverem disponíveis ou forem solicitados.
-4. Antes de criar uma capacidade, procurar o que já existe no projeto e, quando pertinente, em fontes externas atuais.
+4. Antes de criar uma capacidade, procurar o que já existe no projeto, no registro de capacidades e, quando pertinente, em fontes externas atuais.
 5. Para ações em sistemas externos, respeitar permissões e as autorizações do usuário. Registrar resultado e evidência.
 6. Validar resultados proporcionais ao risco. Declarar limitações e divergências relevantes.
 7. Informar o estado real: **ANALISADO**, **PLANEJADO**, **EXECUTADO**, **VALIDADO**, **FALHOU** ou **AGUARDANDO CONFIRMAÇÃO**. Nunca chamar uma simulação de execução.
@@ -55,9 +55,10 @@ Quando a solicitação for sobre o Lab Kids, a recuperação deve ocorrer nesta 
 
 1. `TONNY_COMMAND_CENTER/AGENTS.md`;
 2. `TONNY_COMMAND_CENTER/projects/registry.md`;
-3. `TonnyBoll_Studios/README.md`;
-4. `TonnyBoll_Studios/TB_LAB_KIDS/README.md`;
-5. guia visual, DNA, projeto, episódio e demais arquivos específicos.
+3. `TONNY_COMMAND_CENTER/projects/capabilities.md`, quando houver ferramenta, agente ou integração envolvida;
+4. `TonnyBoll_Studios/README.md`;
+5. `TonnyBoll_Studios/TB_LAB_KIDS/README.md`;
+6. guia visual, DNA, projeto, episódio e demais arquivos específicos.
 
 Um workspace local vazio nunca substitui essa cadeia de fontes.
 
@@ -75,6 +76,22 @@ Fluxo conceitual:
 `intenção do usuário → TONNY_COMMAND_CENTER → agents selecionados → TonnyBoll Studios → TB_LAB_KIDS → universo/personagem → roteiro/takes/prompts/mídia`
 
 O cérebro não deve duplicar o DNA dos projetos. Ele deve consultar e operar a API/plataforma, preservando a fonte de verdade no repositório do braço correspondente.
+
+## Descoberta e roteamento de capacidades
+
+Ferramentas externas não são incorporadas diretamente por aparecerem em um vídeo ou recomendação.
+
+O T.O.N.Y. deve:
+
+1. extrair a capacidade desejada;
+2. procurar alternativas atuais, especialmente no GitHub quando fizer sentido;
+3. avaliar desempenho, manutenção, licença, custo, segurança e integração;
+4. testar uma alternativa com uma amostra real;
+5. registrar evidências no `projects/capabilities.md`;
+6. aprovar a capacidade e criar/atualizar o agente correspondente;
+7. definir em quais braços ou projetos o agente pode ser roteado.
+
+Uma capacidade pode ser reutilizada em Kids, Félix ou outros projetos, mas o agente deve receber o contexto correto antes da execução. Ferramentas citadas no Reel começam em estado **DESCOBERTA**, não **APROVADA**.
 
 Exemplo:
 
