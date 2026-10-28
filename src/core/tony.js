@@ -4,6 +4,7 @@ import { MissionOrchestrator } from "./orchestrator.js";
 import { AgentRegistry } from "./registry.js";
 import { PolicyLayer } from "./policy.js";
 import { IntentRouter } from "./router.js";
+import { buildKidsTake01Plan, planVideoJob as planVideoJobContract } from "./video-job.js";
 
 function id(prefix) {
   return `${prefix}_${Date.now().toString(36)}_${crypto.randomBytes(3).toString("hex")}`;
@@ -225,6 +226,25 @@ export class TonyCore {
       data.audit.push({ id: id("audit"), type: "decision_recorded", projectId, decisionId: record.id, timestamp });
     });
     return { state: "EXECUTADO", decision: record, message: "Decisão registrada no contexto do projeto." };
+  }
+
+
+  async planVideoJob({ job = null, pilot = null } = {}) {
+    const plan = pilot === "kids_take_01"
+      ? buildKidsTake01Plan(job || {})
+      : planVideoJobContract(job || {});
+    const timestamp = now();
+    await this.store.update((data) => {
+      data.audit.push({
+        id: id("audit"),
+        type: "video_job_planned",
+        jobId: plan.job_id,
+        status: plan.status,
+        inputHash: plan.input_hash,
+        timestamp
+      });
+    });
+    return { ...plan, planned_at: timestamp };
   }
 
   dashboard() {
