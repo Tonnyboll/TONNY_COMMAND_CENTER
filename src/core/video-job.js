@@ -53,7 +53,7 @@ function asArray(value) {
 }
 
 function isReference(value) {
-  return typeof value === "string" && /^(drive|github|local|https?):\\/\\//i.test(value);
+  return typeof value === "string" && ["drive://", "github://", "local://", "http://", "https://"].some((prefix) => value.startsWith(prefix));
 }
 
 function validateReferences(values, label, errors) {
@@ -84,7 +84,7 @@ export function validateVideoJob(job = {}) {
   if (job.approval?.human_required !== true) errors.push("approval.human_required precisa ser true.");
   if (asArray(job.takes).length === 0) errors.push("O job precisa conter pelo menos um take planejado.");
   if (job.resource_policy?.gpu === "none") warnings.push("Sem GPU: o job pode planejar e editar, mas a animação generativa ficará aguardando recurso.");
-  if (job.music_ref.startsWith("drive://") && /music-master\\.wav$/i.test(job.music_ref)) {
+  if (job.music_ref.startsWith("drive://") && job.music_ref.endsWith("music-master.wav")) {
     warnings.push("O ref de música segue a convenção do Drive e precisa ser confirmado com o arquivo real antes da execução.");
   }
 
@@ -143,8 +143,8 @@ export function buildKidsTake01Plan(overrides = {}) {
     episode: "001-guarda-guarda-guarda",
     brief_ref: `${episodeRoot}/TAKE_01_APROVADO.md@main`,
     dna_refs: [
-      `${episodeRoot}/../../personagens/melanca/DNA_PERSONAGEM.md@main`,
-      `${episodeRoot}/../../personagens/melanca-friend-green/DNA_PERSONAGEM.md@main`
+      "github://Tonnyboll/Tonnyboll_Studios/TB_LAB_KIDS/projetos/o-mundo-magico-de-melanca/personagens/melanca/DNA_PERSONAGEM.md@main",
+      "github://Tonnyboll/Tonnyboll_Studios/TB_LAB_KIDS/projetos/o-mundo-magico-de-melanca/personagens/melanca-friend-green/DNA_PERSONAGEM.md@main"
     ],
     asset_refs: [
       `${driveRoot}/takes/take-01/frame-01.png`,
