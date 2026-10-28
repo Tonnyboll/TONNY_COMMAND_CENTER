@@ -78,6 +78,16 @@ const server = http.createServer(async (request, response) => {
       const body = await readBody(request);
       return sendJson(response, 200, await core.handleMessage(body));
     }
+    if (request.method === "GET" && url.pathname === "/api/video-jobs/kids/take-01") {
+      return sendJson(response, 200, await core.planVideoJob({ pilot: "kids_take_01" }));
+    }
+    if (request.method === "POST" && url.pathname === "/api/video-jobs/plan") {
+      const body = await readBody(request);
+      return sendJson(response, 200, await core.planVideoJob({
+        pilot: body.pilot || null,
+        job: body.job || body
+      }));
+    }
     if (request.method === "POST" && url.pathname === "/api/tool-requests") {
       const body = await readBody(request);
       return sendJson(response, 200, await core.requestTool(body));

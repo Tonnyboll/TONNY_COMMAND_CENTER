@@ -52,6 +52,96 @@ const DEFAULT_AGENTS = [
     costLevel: "medium",
     parallelizable: false,
     confidenceRequired: "high"
+  },
+  {
+    id: "context-guard",
+    domain: "kids_video",
+    capabilities: ["project_context_guard", "route_validation", "asset_scope_validation"],
+    tools: ["manifest_store", "policy"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "high"
+  },
+  {
+    id: "kids-story-planner",
+    domain: "kids_video",
+    capabilities: ["kids_story_planning", "take_planning", "duration_budgeting"],
+    tools: ["manifest_store"],
+    costLevel: "medium",
+    parallelizable: false,
+    confidenceRequired: "medium"
+  },
+  {
+    id: "kids-visual-dna-guard",
+    domain: "kids_video",
+    capabilities: ["visual_dna_validation", "character_continuity", "kids_safety_review"],
+    tools: ["manifest_store", "quality_gate"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "high"
+  },
+  {
+    id: "take-planner",
+    domain: "kids_video",
+    capabilities: ["take_planning", "frame_pair_planning", "continuity_planning"],
+    tools: ["manifest_store"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "high"
+  },
+  {
+    id: "motion-library-agent",
+    domain: "kids_video",
+    capabilities: ["motion_library_sequencing", "motion_reuse", "macro_music_context"],
+    tools: ["manifest_store"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "medium"
+  },
+  {
+    id: "music-director-agent",
+    domain: "kids_video",
+    capabilities: ["music_reference", "lyrics_context", "audio_policy"],
+    tools: ["manifest_store", "audio_worker"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "medium"
+  },
+  {
+    id: "video-generation-router",
+    domain: "kids_video",
+    capabilities: ["video_generation_routing", "gpu_policy", "worker_selection"],
+    tools: ["resource_policy", "worker_registry"],
+    costLevel: "medium",
+    parallelizable: false,
+    confidenceRequired: "high"
+  },
+  {
+    id: "deterministic-editor",
+    domain: "kids_video",
+    capabilities: ["deterministic_video_editing", "audio_mixing", "media_materialization"],
+    tools: ["ffmpeg", "mlt", "worker"],
+    costLevel: "low",
+    parallelizable: false,
+    confidenceRequired: "high"
+  },
+  {
+    id: "video-qa-gate",
+    domain: "kids_video",
+    capabilities: ["video_quality_assurance", "technical_media_validation", "visual_continuity_review"],
+    tools: ["ffprobe", "quality_gate", "frame_sampler"],
+    costLevel: "low",
+    parallelizable: true,
+    confidenceRequired: "high"
+  },
+  {
+    id: "delivery-agent",
+    domain: "kids_video",
+    capabilities: ["artifact_delivery", "manifest_registration", "drive_package"],
+    tools: ["drive", "manifest_store"],
+    costLevel: "low",
+    parallelizable: false,
+    confidenceRequired: "high"
   }
 ];
 

@@ -34,3 +34,17 @@ O primeiro núcleo funcional já está disponível na branch de feature:
 - painel local em `http://localhost:3030`.
 
 Esta versão não executa ferramentas externas. Ela registra solicitações e deixa o estado real explícito para que as integrações sejam adicionadas com segurança.
+
+
+## Planejamento seguro de vídeo Kids
+
+O primeiro planejador executável do pipeline está em `src/core/video-job.js`.
+
+- `GET /api/video-jobs/kids/take-01` gera o plano do Take 01;
+- `POST /api/video-jobs/plan` valida e gera um plano a partir de um manifesto;
+- o planejamento não inicia GPU, não chama ferramentas externas e não publica arquivos;
+- o limite do TB Lab Kids é de 120 segundos;
+- refs reais de frames e música precisam ser vinculados antes da execução;
+- a saída passa por QA e aprovação humana antes da entrega.
+
+O planejador registra os agentes Kids no registry e mantém os adaptadores substituíveis. A execução pesada continua deliberadamente fora do núcleo até que exista um worker aprovado.
