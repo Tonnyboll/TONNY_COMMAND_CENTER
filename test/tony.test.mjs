@@ -6,6 +6,7 @@ import test from "node:test";
 import { EMPTY_STATE, JsonStore } from "../src/core/store.js";
 import { KnowledgeLayer } from "../src/core/knowledge.js";
 import { TonyCore } from "../src/core/tony.js";
+import { DEFAULT_AGENTS } from "../src/core/registry.js";
 import { evaluateQuality } from "../src/core/quality-gate.js";
 
 async function makeCore() {
@@ -37,7 +38,7 @@ test("agent registry backfills new default agents in an existing store", async (
     const store = await new JsonStore(path.join(directory, "tony.json"), seed).init();
     const core = await new TonyCore({ store }).initialize();
     assert.ok(store.snapshot().agents.some((agent) => agent.id === "implementation-agent"));
-    assert.equal(core.registry.list().length, 6);
+    assert.equal(core.registry.list().length, DEFAULT_AGENTS.length);
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
