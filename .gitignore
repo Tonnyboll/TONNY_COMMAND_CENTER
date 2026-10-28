@@ -24,3 +24,8 @@ Thumbs.db
 tmp/
 work/
 *.log
+
+# Estado local do Command Center
+data/tony.json
+data/tony.json.tmp
+data/knowledge/private-curated.json

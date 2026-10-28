@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "source-of-truth-before-implementation",
+      "title": "Validar regras e modelo antes do código",
+      "domain": "engineering",
+      "tags": ["architecture", "data-model", "contracts", "planning"],
+      "summary": "Definir fonte da verdade, modelo de dados, invariantes e contrato antes de iniciar a implementação. Integrações externas devem ser tratadas como espelhos quando o domínio local é a fonte oficial.",
+      "evidenceLevel": "curated",
+      "sources": ["repository architecture and data-model documents"]
+    },
+    {
+      "id": "bounded-contexts-and-invariants",
+      "title": "Separar contextos e preservar invariantes",
+      "domain": "engineering",
+      "tags": ["domain", "authorization", "business-rules", "audit"],
+      "summary": "Separar contextos operacionais, comerciais, fiscais e logísticos. Modelar estados e transições explicitamente, manter cada regra perto do caso de uso responsável e impedir que uma visão gerencial altere silenciosamente a fonte operacional.",
+      "evidenceLevel": "curated",
+      "sources": ["domain modeling and API contract documents"]
+    },
+    {
+      "id": "layered-use-case-architecture",
+      "title": "Arquitetura em camadas com casos de uso",
+      "domain": "software_architecture",
+      "tags": ["application", "domain", "gateway", "infrastructure", "read-model"],
+      "summary": "Organizar a aplicação em apresentação, segurança, aplicação/casos de uso, domínio e infraestrutura. Usar gateways e adaptadores para isolar persistência e integrações, com DTOs e read models explícitos.",
+      "evidenceLevel": "curated",
+      "sources": ["architecture diagrams and application packages"]
+    },
+    {
+      "id": "evidence-first-impact-analysis",
+      "title": "Evidência, escopo e impacto rastreável",
+      "domain": "quality",
+      "tags": ["impact-analysis", "evidence", "traceability", "legacy"],
+      "summary": "Classificar impacto por evidência, registrar origem, linha, relacionamento e motivo, manter escopo local separado de dependências externas e não transformar ausência de resultado em aprovação.",
+      "evidenceLevel": "curated",
+      "sources": ["impact-analysis and refactoring tool documents"]
+    },
+    {
+      "id": "patch-gates-and-permissions",
+      "title": "Alterações controladas por gate",
+      "domain": "security",
+      "tags": ["patch", "permissions", "hash", "validation", "manual-review"],
+      "summary": "Representar linhas ou unidades alteráveis com permissões, hashes e status. Validar limites de área, preservar conteúdo fora do escopo, registrar diffs e encaminhar casos ambíguos para intervenção manual.",
+      "evidenceLevel": "curated",
+      "sources": ["patch gate implementation and validation tests"]
+    },
+    {
+      "id": "external-source-uncertainty",
+      "title": "Fontes externas têm status e limites explícitos",
+      "domain": "research",
+      "tags": ["source-status", "uncertainty", "read-only", "market-data"],
+      "summary": "Registrar fonte, horário, quantidade, falhas e idade dos dados. Diferenciar ausência de alerta de segurança, pesquisa de recomendação e dado atual de histórico. Não operar nem armazenar credenciais quando a capacidade é somente informativa.",
+      "evidenceLevel": "curated",
+      "sources": ["read-only research architecture and event tests"]
+    },
+    {
+      "id": "quality-gates-and-release-evidence",
+      "title": "Cada bloco precisa de validação proporcional",
+      "domain": "delivery",
+      "tags": ["tests", "ci", "postman", "coverage", "release"],
+      "summary": "Manter testes unitários e E2E, contratos e coleções atualizados, quality gate por bloco funcional e evidências de homologação. Só promover uma versão com CI verde e validação real do fluxo.",
+      "evidenceLevel": "curated",
+      "sources": ["CI, test, Postman and release documents"]
+    },
+    {
+      "id": "product-lab-history",
+      "title": "Evolução registrada em laboratórios",
+      "domain": "product",
+      "tags": ["decision-log", "labs", "evolution", "documentation"],
+      "summary": "Preservar a história do produto em ciclos separados. Cada laboratório registra contexto, problema, objetivo, entregas, decisões, evidências, validações e próximos passos sem reescrever o passado.",
+      "evidenceLevel": "curated",
+      "sources": ["showcase laboratory documentation"]
+    },
+    {
+      "id": "creative-production-gates",
+      "title": "Produção criativa por etapas e continuidade",
+      "domain": "creative",
+      "tags": ["production", "continuity", "cost", "review"],
+      "summary": "Separar conceito, roteiro, cenas, imagens, movimento, montagem, áudio e finalização. Gerar com IA apenas o que exige geração, reaproveitar estados aprovados e validar continuidade antes de avançar.",
+      "evidenceLevel": "curated",
+      "sources": ["creative production flow and visual guide documents"]
+    },
+    {
+      "id": "clarity-over-decoration",
+      "title": "Clareza da ação acima da decoração",
+      "domain": "ux", 
+      "tags": ["visual-hierarchy", "accessibility", "continuity", "focus"],
+      "summary": "Priorizar ação, reação, consequência e hierarquia visual. Remover elementos sem função, preservar espaço para movimento e usar status legíveis em vez de complexidade ornamental.",
+      "evidenceLevel": "curated",
+      "sources": ["visual production and interface specification documents"]
+    }
+  ]
+}

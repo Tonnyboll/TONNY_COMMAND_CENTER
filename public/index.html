@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>T.O.N.Y. Command Center</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PERSONAL COMMAND CENTER</p>
+          <h1>T.O.N.Y.</h1>
+        </div>
+        <span id="health" class="status-pill">verificando...</span>
+      </header>
+
+      <section class="cards" aria-label="System status">
+        <article><span>Agents</span><strong id="agents">0</strong></article>
+        <article><span>Projects</span><strong id="projects">0</strong></article>
+        <article><span>Missions</span><strong id="missions">0</strong></article>
+        <article><span>Audit events</span><strong id="audit">0</strong></article>
+        <article><span>Knowledge entries</span><strong id="knowledge">0</strong></article>
+      </section>
+
+      <section class="workspace">
+        <div class="panel conversation-panel">
+          <div class="panel-heading"><h2>Command line</h2><span>informal until activated</span></div>
+          <div id="messages" class="messages" aria-live="polite">
+            <div class="message system">Conversa informal não cria projeto nem memória. Diga “TONY, vamos iniciar um projeto sobre ...” para ativar um contexto.</div>
+          </div>
+          <form id="command-form" class="command-form">
+            <input id="command" autocomplete="off" placeholder="TONY, ..." aria-label="Command" />
+            <button type="submit">Enviar</button>
+          </form>
+        </div>
+
+        <aside class="panel activity-panel">
+          <div class="panel-heading"><h2>Activity</h2><span>real state</span></div>
+          <div id="activity" class="activity-list"><p class="muted">Nenhuma atividade persistente.</p></div>
+          <div class="panel-heading"><h2>Current plan</h2><span id="orchestration-state">aguardando</span></div>
+          <div id="orchestration" class="orchestration"><p class="muted">Nenhuma missão arquitetada.</p></div>
+        </aside>
+      </section>
+    </main>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
