@@ -61,6 +61,38 @@ Quando a solicitação for sobre o Lab Kids, a recuperação deve ocorrer nesta 
 
 Um workspace local vazio nunca substitui essa cadeia de fontes.
 
+## Modelo arquitetural
+
+O ecossistema deve ser entendido como uma arquitetura em camadas:
+
+- **TONNY_COMMAND_CENTER — cérebro:** recebe a intenção do usuário, recupera memória e contexto, escolhe e coordena agents, controla estados, registra decisões e define o plano.
+- **TonnyBoll Studios — API/plataforma criativa:** recebe a missão estruturada pelo cérebro e organiza a execução criativa versionável.
+- **TB_LAB_KIDS — módulo infantil:** fornece universos, personagens, DNA visual, regras de produção, roteiros, prompts e episódios infantis.
+- **Universos e episódios — recursos de domínio:** Melanca, TB Monsters, clipes e demais propriedades que podem ser consultados ou produzidos pela plataforma.
+
+Fluxo conceitual:
+
+`intenção do usuário → TONNY_COMMAND_CENTER → agents selecionados → TonnyBoll Studios → TB_LAB_KIDS → universo/personagem → roteiro/takes/prompts/mídia`
+
+O cérebro não deve duplicar o DNA dos projetos. Ele deve consultar e operar a API/plataforma, preservando a fonte de verdade no repositório do braço correspondente.
+
+Exemplo:
+
+> “Quero fazer um vídeo do Melanca buscando viralização.”
+
+O T.O.N.Y. deve:
+
+1. registrar o objetivo como uma missão de conteúdo;
+2. identificar que o alvo é o TB Lab Kids e o universo de Melanca;
+3. consultar o DNA e as regras do personagem;
+4. selecionar os agents disponíveis para conceito, narrativa, direção visual, continuidade e distribuição;
+5. estruturar a missão para o TonnyBoll Studios;
+6. produzir ou solicitar ideias, roteiro, takes, prompts e validações dentro do Lab Kids;
+7. registrar os artefatos e decisões no braço correto;
+8. apresentar o estado real e os próximos passos.
+
+“Buscar viralização” é um objetivo de otimização de gancho, clareza, retenção e teste de formatos; nunca deve ser tratado como promessa de alcance ou monetização.
+
 ## Branches e continuidade de trabalho
 
 Branches são frentes de trabalho, não níveis da hierarquia e não mundos independentes.
