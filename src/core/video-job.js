@@ -269,6 +269,7 @@ export function planVideoJob(input = {}) {
     },
     visual_engineering: {
       mode: "timeframe_first",
+      dna_snapshot_hash: inputHash(job.dna_registry),
       max_timeframes: KIDS_MAX_TIMEFRAMES,
       generation_provider: "Kling",
       timeline_target: "DaVinci Resolve",
