@@ -3,19 +3,49 @@ import test from "node:test";
 import {
   buildKidsTake01Plan,
   planVideoJob,
+  validateCharacterDna,
+  validateTakeContinuity,
   validateVideoJob
 } from "../src/core/video-job.js";
+const MINIMAL_DNA_REGISTRY = {
+  schema_version: "tony.character-dna.v1",
+  source_of_truth: "github://dna/index.md",
+  characters: [
+    {
+      character_id: "melanca",
+      dna_ref: "github://dna/melanca.md",
+      reference_pack: ["drive://melanca/ref-01.png"],
+      immutable_fields: ["silhouette", "face", "body_proportions"],
+      variant_fields: ["pose", "expression"],
+      conditioning_plan: [{ method: "ip_adapter" }, { method: "controlnet" }]
+    }
+  ]
+};
 
 test("Take 01 is planned without starting external tools or GPU", () => {
   const plan = buildKidsTake01Plan();
   assert.equal(plan.status, "PLANNED");
-  assert.equal(plan.readiness, "READY_FOR_ASSET_BINDING");
+  assert.equal(plan.readiness, "READY_FOR_VISUAL_ASSET_BINDING");
   assert.equal(plan.job.duration_limit_seconds, 120);
   assert.equal(plan.job.takes[0].take_id, "take-01");
+  assert.equal(plan.job.takes[0].start_frame_ref.startsWith("drive://"), true);
+  assert.equal(plan.job.takes[0].end_frame_ref.startsWith("drive://"), true);
+  assert.equal(plan.job.takes[0].outgoing_hook.length > 0, true);
+  assert.equal(plan.visual_engineering.dna_snapshot_hash.length, 64);
   assert.equal(plan.execution.external_tools_started, false);
   assert.equal(plan.execution.heavy_gpu_started, false);
   assert.equal(plan.stages.length, 10);
   assert.equal(plan.validation.valid, true);
+});
+
+test("Take continuity exposes missing boundary data", () => {
+  const result = validateTakeContinuity([
+    { take_id: "take-01" },
+    { take_id: "take-02", start_frame_ref: "drive://take-02/start.png" }
+  ]);
+  assert.equal(result.valid, true);
+  assert.ok(result.warnings.some((warning) => warning.includes("start_frame_ref")));
+  assert.ok(result.warnings.some((warning) => warning.includes("incoming_match")));
 });
 
 test("Kids duration limit blocks a job above two minutes", () => {
@@ -40,8 +70,9 @@ test("invalid references and missing human approval are blocked", () => {
     route: "TB_LAB_KIDS",
     brief_ref: "not-a-ref",
     dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
     asset_refs: ["drive://frame.png"],
-    music_ref: "drive://music.wav",
+    soundtrack_ref: "drive://soundtrack.wav",
     duration_limit_seconds: 10,
     quality_profile: "kids_pilot_v1",
     resource_policy: { gpu: "local_then_cloud", auto_start: false },
@@ -53,14 +84,34 @@ test("invalid references and missing human approval are blocked", () => {
   assert.ok(result.validation.errors.some((error) => error.includes("human_required")));
 });
 
+test("soundtrack generation is rejected by the visual engineer", () => {
+  const result = planVideoJob({
+    job_id: "audio-out-of-scope",
+    route: "TB_LAB_KIDS",
+    brief_ref: "github://brief",
+    dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
+    asset_refs: ["drive://frame.png"],
+    soundtrack_generation: { engine: "ACE-Step" },
+    duration_limit_seconds: 10,
+    quality_profile: "kids_pilot_v1",
+    resource_policy: { gpu: "local_then_cloud", auto_start: false },
+    approval: { human_required: true },
+    takes: [{ take_id: "take-01" }]
+  });
+  assert.equal(result.status, "BLOCKED");
+  assert.ok(result.validation.errors.some((error) => error.includes("soundtrack_generation")));
+});
+
 test("validation remains pure and does not mutate the input job", () => {
   const job = {
     job_id: "pure-job",
     route: "TB_LAB_KIDS",
     brief_ref: "github://brief",
     dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
     asset_refs: ["drive://frame.png"],
-    music_ref: "drive://music.wav",
+    soundtrack_ref: "drive://soundtrack.wav",
     duration_limit_seconds: 10,
     quality_profile: "kids_pilot_v1",
     resource_policy: { gpu: "local_then_cloud", auto_start: false },
@@ -70,4 +121,21 @@ test("validation remains pure and does not mutate the input job", () => {
   const before = JSON.stringify(job);
   assert.equal(validateVideoJob(job).valid, true);
   assert.equal(JSON.stringify(job), before);
+});
+
+test("DNA registry blocks identity plans without an approved reference pack", () => {
+  const result = validateCharacterDna({
+    schema_version: "tony.character-dna.v1",
+    source_of_truth: "github://dna/index.md",
+    characters: [{
+      character_id: "melanca",
+      dna_ref: "github://dna/melanca.md",
+      reference_pack: [],
+      immutable_fields: ["silhouette"],
+      variant_fields: ["pose"],
+      conditioning_plan: [{ method: "ip_adapter" }]
+    }]
+  });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((error) => error.includes("reference_pack")));
 });
