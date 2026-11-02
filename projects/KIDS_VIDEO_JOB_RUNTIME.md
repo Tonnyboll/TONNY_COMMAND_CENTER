@@ -17,6 +17,18 @@ O agente não gera música, não chama geradores de áudio e não renderiza o v�
 
 A trilha sonora é escolhida e gerada fora do T.O.N.Y. (por exemplo, Suno ou processo manual) e entra depois como asset externo da montagem.
 
+## Registro de DNA visual
+
+O DNA é um recurso de primeira classe do job, não um texto solto dentro do prompt. Cada personagem deve estar registrado em `dna_registry` com:
+
+- `dna_ref`: documento canônico versionado;
+- `reference_pack`: imagens aprovadas para identidade e estilo;
+- `immutable_fields`: silhueta, rosto, proporções, cores, roupas e marcas que não podem variar;
+- `variant_fields`: pose, expressão, olhar, câmera e interação que podem variar;
+- `conditioning_plan`: métodos que o provider pode usar para preservar referência e estrutura.
+
+O plano padrão usa IP-Adapter para referência visual e ControlNet para pose/composição quando o provider suportar. InstantID/PuLID ficam como adaptadores opcionais para identidades faciais humanas; LoRA só entra depois de um conjunto aprovado de imagens. Nenhum desses componentes substitui o DNA canônico ou a aprovação humana.
+
 ## Contrato de continuidade
 
 Cada take deve informar:
