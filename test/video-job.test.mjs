@@ -3,9 +3,24 @@ import test from "node:test";
 import {
   buildKidsTake01Plan,
   planVideoJob,
+  validateCharacterDna,
   validateTakeContinuity,
   validateVideoJob
 } from "../src/core/video-job.js";
+const MINIMAL_DNA_REGISTRY = {
+  schema_version: "tony.character-dna.v1",
+  source_of_truth: "github://dna/index.md",
+  characters: [
+    {
+      character_id: "melanca",
+      dna_ref: "github://dna/melanca.md",
+      reference_pack: ["drive://melanca/ref-01.png"],
+      immutable_fields: ["silhouette", "face", "body_proportions"],
+      variant_fields: ["pose", "expression"],
+      conditioning_plan: [{ method: "ip_adapter" }, { method: "controlnet" }]
+    }
+  ]
+};
 
 test("Take 01 is planned without starting external tools or GPU", () => {
   const plan = buildKidsTake01Plan();
@@ -54,6 +69,7 @@ test("invalid references and missing human approval are blocked", () => {
     route: "TB_LAB_KIDS",
     brief_ref: "not-a-ref",
     dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
     asset_refs: ["drive://frame.png"],
     soundtrack_ref: "drive://soundtrack.wav",
     duration_limit_seconds: 10,
@@ -73,6 +89,7 @@ test("soundtrack generation is rejected by the visual engineer", () => {
     route: "TB_LAB_KIDS",
     brief_ref: "github://brief",
     dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
     asset_refs: ["drive://frame.png"],
     soundtrack_generation: { engine: "ACE-Step" },
     duration_limit_seconds: 10,
@@ -91,6 +108,7 @@ test("validation remains pure and does not mutate the input job", () => {
     route: "TB_LAB_KIDS",
     brief_ref: "github://brief",
     dna_refs: ["github://dna"],
+    dna_registry: MINIMAL_DNA_REGISTRY,
     asset_refs: ["drive://frame.png"],
     soundtrack_ref: "drive://soundtrack.wav",
     duration_limit_seconds: 10,
@@ -102,4 +120,21 @@ test("validation remains pure and does not mutate the input job", () => {
   const before = JSON.stringify(job);
   assert.equal(validateVideoJob(job).valid, true);
   assert.equal(JSON.stringify(job), before);
+});
+
+test("DNA registry blocks identity plans without an approved reference pack", () => {
+  const result = validateCharacterDna({
+    schema_version: "tony.character-dna.v1",
+    source_of_truth: "github://dna/index.md",
+    characters: [{
+      character_id: "melanca",
+      dna_ref: "github://dna/melanca.md",
+      reference_pack: [],
+      immutable_fields: ["silhouette"],
+      variant_fields: ["pose"],
+      conditioning_plan: [{ method: "ip_adapter" }]
+    }]
+  });
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((error) => error.includes("reference_pack")));
 });
