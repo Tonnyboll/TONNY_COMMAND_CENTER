@@ -1,40 +1,94 @@
-# Runtime do job de vídeo Kids
+# Engenheiro de Vídeo Kids — runtime de timeframes
 
-Este documento descreve a primeira capacidade executável do T.O.N.Y. para o TB Lab Kids.
+Esta capacidade do T.O.N.Y. transforma roteiro e letra em um plano visual pronto para produção com Kling e montagem no DaVinci Resolve.
 
-## O que já está pronto
+## Escopo
 
-- contrato de job `tony.job.v1`;
-- planejador puro e token-aware em `src/core/video-job.js`;
-- registry dos agentes de produção Kids;
-- endpoint de planejamento do Take 01;
-- validação do limite de 120 segundos;
-- estado explícito de GPU e bloqueio de auto-start;
-- QA e aprovação humana como portões obrigatórios.
+O agente não gera música, não chama geradores de áudio e não renderiza o vídeo final sozinho. Ele:
 
-## O que o planejador não faz
+- interpreta o briefing como uma demonstração infantil, não como uma história longa;
+- divide o episódio em no máximo 10 microcenas/timeframes;
+- descreve ação, personagem, objeto, enquadramento e asset necessário;
+- inspeciona o frame inicial e o frame final de cada take;
+- cria o gancho de saída e a condição de entrada do próximo take;
+- planeja repetições, cortes e transições;
+- valida continuidade visual e cobertura do roteiro;
+- exporta um manifesto de timeline para o DaVinci.
 
-O planejador não baixa modelos, não abre ComfyUI, não chama Wan/VACE, não gera música, não grava no Drive e não publica nada. Ele gera um plano compacto para um worker autorizado.
+A trilha sonora é escolhida e gerada fora do T.O.N.Y. (por exemplo, Suno ou processo manual) e entra depois como asset externo da montagem.
 
-## Contrato dos adaptadores
+## Contrato de continuidade
 
-Cada adapter futuro deve expor:
+Cada take deve informar:
 
-1. `plan(input_ref)`;
-2. `execute(plan_ref)`;
-3. `validate(artifact_ref)`;
-4. `materialize(manifest_ref)`.
+- start_frame_ref: referência do frame ou estado inicial;
+- end_frame_ref: referência do frame ou estado final;
+- outgoing_hook: o que o final deixa preparado;
+- incoming_match: como o take seguinte deve começar;
+- action_chain: sequência visual observável;
+- final_motion_state: movimento ou pose que deve ser preservado.
 
-A camada de agente escolhe a capacidade; o adapter executa a ferramenta. Nenhuma ferramenta específica pode virar o cérebro do T.O.N.Y.
+A regra central é:
 
-## Primeira chamada
+final do Take N = gancho visual para o início do Take N+1.
 
-```http
-GET /api/video-jobs/kids/take-01
-```
+O agente deve bloquear ou sinalizar a sequência quando os estados não casarem. O DaVinci receberá marcadores de entrada, saída e gancho para facilitar a montagem de um vídeo único.
 
-A resposta é `PLANNED` quando o contrato está válido. O próximo passo é substituir os refs convencionais do Drive pelos IDs/caminhos reais dos dois frames aprovados e do arquivo de música.
+## Contrato de timeframes
 
-## Estados
+O planejador usa o contrato tony.video-job.v2 e retorna:
 
-`PLANNED` não significa que o vídeo existe. Significa que o job foi validado e está pronto para vinculação de assets e revisão de recurso. A animação só pode entrar em `RUNNING` após o worker e a autorização do plano existirem.
+- video_plan.timeframes;
+- video_plan.transition_plan;
+- video_plan.davinci_timeline;
+- visual_engineering.continuity;
+- estados de asset e pendências;
+- portões de QA e aprovação humana.
+
+Cada timeframe deve ter, no mínimo:
+
+- timeframe_id;
+- start_seconds;
+- end_seconds;
+- action;
+- characters;
+- object;
+- asset_status;
+- transition_out.
+
+O v1 aceita até 10 timeframes por bloco visual e duração máxima de 120 segundos.
+
+## Fluxo
+
+1. context-guard valida o escopo do episódio.
+2. kids-story-planner converte o briefing em microações demonstráveis.
+3. kids-visual-dna-guard valida personagens e cenário.
+4. timeframe-engineer cria os blocos de tempo.
+5. take-continuity-agent compara entradas, saídas e ganchos entre takes.
+6. video-generation-router prepara os pedidos para Kling.
+7. transition-engineer define cortes, match-cuts, wipes, zooms e repetições.
+8. davinci-timeline-agent exporta marcadores e ordem de montagem.
+9. video-qa-gate verifica duração, cobertura, continuidade e arquivos.
+10. delivery-agent entrega o pacote para revisão humana.
+
+## Saídas para o DaVinci
+
+A primeira versão exporta uma timeline lógica com:
+
+- nome da timeline;
+- FPS e resolução;
+- ordem dos clips;
+- entradas e saídas;
+- marcadores de timeframe;
+- marcadores de handoff entre takes;
+- transição sugerida;
+- slot reservado para trilha externa;
+- pendências de assets.
+
+Formatos planejados: CSV de marcadores, EDL e XML conforme o adapter do DaVinci.
+
+## Limites
+
+PLANNED não significa que o vídeo existe. Significa que o plano visual foi validado. Geração via Kling, edição no DaVinci e aprovação humana continuam sendo etapas separadas.
+
+A ausência de um asset ou de um frame de continuidade deve aparecer como pendência explícita; o agente não deve inventar que uma cena foi produzida.
