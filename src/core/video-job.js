@@ -2,6 +2,8 @@ import crypto from "node:crypto";
 
 export const KIDS_MAX_DURATION_SECONDS = 120;
 export const KIDS_MAX_TIMEFRAMES = 10;
+export const CHARACTER_DNA_SCHEMA_VERSION = "tony.character-dna.v1";
+export const DNA_CONDITIONING_METHODS = ["ip_adapter", "controlnet", "instantid", "pulid", "lora"];
 
 export const KIDS_VIDEO_AGENT_IDS = [
   "context-guard",
@@ -133,6 +135,57 @@ export function validateTakeContinuity(takes = []) {
   return { valid: errors.length === 0, errors, warnings };
 }
 
+export function validateCharacterDna(dnaRegistry = null) {
+  const errors = [];
+  const warnings = [];
+
+  if (!dnaRegistry || typeof dnaRegistry !== "object") {
+    errors.push("dna_registry é obrigatório para travar a identidade visual do elenco.");
+    return { valid: false, errors, warnings };
+  }
+  if (dnaRegistry.schema_version !== CHARACTER_DNA_SCHEMA_VERSION) {
+    errors.push("dna_registry.schema_version precisa ser " + CHARACTER_DNA_SCHEMA_VERSION + ".");
+  }
+  if (!isReference(dnaRegistry.source_of_truth)) {
+    errors.push("dna_registry.source_of_truth precisa apontar para o índice canônico do elenco.");
+  }
+
+  const characters = asArray(dnaRegistry.characters);
+  if (characters.length === 0) {
+    errors.push("dna_registry.characters precisa conter pelo menos um personagem.");
+  }
+
+  characters.forEach((character, index) => {
+    const label = "dna_registry.characters[" + index + "]";
+    if (!character.character_id) errors.push(label + ".character_id é obrigatório.");
+    if (!isReference(character.dna_ref)) errors.push(label + ".dna_ref precisa ser uma referência válida.");
+    const referencePack = asArray(character.reference_pack);
+    if (referencePack.length === 0) {
+      errors.push(label + ".reference_pack precisa conter referências visuais aprovadas.");
+    }
+    validateReferences(referencePack, label + ".reference_pack", errors);
+    if (asArray(character.immutable_fields).length === 0) {
+      errors.push(label + ".immutable_fields precisa proteger o DNA estrutural.");
+    }
+    if (asArray(character.variant_fields).length === 0) {
+      warnings.push(label + ".variant_fields não foi informado; pose e expressão ficarão sem liberdade explícita.");
+    }
+
+    const conditioningPlan = asArray(character.conditioning_plan);
+    if (conditioningPlan.length === 0) {
+      warnings.push(label + ".conditioning_plan está vazio; a geração dependerá apenas do provider externo.");
+    }
+    conditioningPlan.forEach((conditioning, conditioningIndex) => {
+      const method = typeof conditioning === "string" ? conditioning : conditioning?.method;
+      if (!DNA_CONDITIONING_METHODS.includes(method)) {
+        errors.push(label + ".conditioning_plan[" + conditioningIndex + "] usa método não suportado.");
+      }
+    });
+  });
+
+  return { valid: errors.length === 0, errors, warnings };
+}
+
 export function validateVideoJob(job = {}) {
   const errors = [];
   const warnings = [];
@@ -140,12 +193,15 @@ export function validateVideoJob(job = {}) {
   const dnaRefs = asArray(job.dna_refs || (job.dna_ref ? [job.dna_ref] : []));
   const timeframeValidation = validateTimeframes(job.video_plan?.timeframes, duration || KIDS_MAX_DURATION_SECONDS);
   const continuityValidation = validateTakeContinuity(job.takes);
+  const dnaRegistryValidation = validateCharacterDna(job.dna_registry);
 
   if (!job.job_id || typeof job.job_id !== "string") errors.push("job_id é obrigatório.");
   if (job.route !== "TB_LAB_KIDS") errors.push("A v1 deste planejador aceita somente route=TB_LAB_KIDS.");
   if (!job.brief_ref || !isReference(job.brief_ref)) errors.push("brief_ref precisa apontar para um manifesto ou documento versionado.");
   if (dnaRefs.length === 0) errors.push("É obrigatório informar pelo menos uma referência de DNA.");
   validateReferences(dnaRefs, "dna_refs", errors);
+  errors.push(...dnaRegistryValidation.errors);
+  warnings.push(...dnaRegistryValidation.warnings);
   if (asArray(job.asset_refs).length === 0) errors.push("É obrigatório informar os ativos aprovados do job.");
   validateReferences(job.asset_refs, "asset_refs", errors);
   if (!Number.isFinite(duration) || duration <= 0) errors.push("duration_limit_seconds precisa ser maior que zero.");
@@ -293,6 +349,39 @@ export function buildKidsTake01Plan(overrides = {}) {
       "github://Tonnyboll/Tonnyboll_Studios/TB_LAB_KIDS/projetos/o-mundo-magico-de-melanca/personagens/melanca/DNA_PERSONAGEM.md@main",
       "github://Tonnyboll/Tonnyboll_Studios/TB_LAB_KIDS/projetos/o-mundo-magico-de-melanca/personagens/melanca-friend-green/DNA_PERSONAGEM.md@main"
     ],
+    dna_registry: {
+      schema_version: CHARACTER_DNA_SCHEMA_VERSION,
+      source_of_truth: episodeRoot + "/personagens/INDICE_PERSONAGENS.md@main",
+      policy: {
+        immutable_fields_are_locked: true,
+        new_reference_requires_human_approval: true,
+        prompt_alone_is_not_identity: true
+      },
+      characters: [
+        {
+          character_id: "melanca",
+          dna_ref: episodeRoot + "/personagens/melanca/DNA_PERSONAGEM.md@main",
+          reference_pack: [driveRoot + "/takes/take-01/frame-01.png", driveRoot + "/takes/take-01/frame-02.png"],
+          immutable_fields: ["silhouette", "face", "body_proportions", "skin_color", "hair", "hat", "base_outfit"],
+          variant_fields: ["pose", "expression", "gaze", "action", "camera", "prop_interaction"],
+          conditioning_plan: [
+            { method: "ip_adapter", role: "preserve approved character and style references" },
+            { method: "controlnet", role: "preserve pose, composition or spatial handoff when available" }
+          ]
+        },
+        {
+          character_id: "melanca-friend-green",
+          dna_ref: episodeRoot + "/personagens/melanca-friend-green/DNA_PERSONAGEM.md@main",
+          reference_pack: [driveRoot + "/takes/take-01/frame-01.png", driveRoot + "/takes/take-01/frame-02.png"],
+          immutable_fields: ["silhouette", "face", "body_proportions", "green_color", "two_teeth", "base_outfit"],
+          variant_fields: ["pose", "expression", "gaze", "action", "camera", "prop_interaction"],
+          conditioning_plan: [
+            { method: "ip_adapter", role: "preserve approved character and style references" },
+            { method: "controlnet", role: "preserve pose, composition or spatial handoff when available" }
+          ]
+        }
+      ]
+    },
     asset_refs: [
       driveRoot + "/takes/take-01/frame-01.png",
       driveRoot + "/takes/take-01/frame-02.png"
