@@ -31,6 +31,7 @@ test("Take 01 is planned without starting external tools or GPU", () => {
   assert.equal(plan.job.takes[0].start_frame_ref.startsWith("drive://"), true);
   assert.equal(plan.job.takes[0].end_frame_ref.startsWith("drive://"), true);
   assert.equal(plan.job.takes[0].outgoing_hook.length > 0, true);
+  assert.equal(plan.visual_engineering.dna_snapshot_hash.length, 64);
   assert.equal(plan.execution.external_tools_started, false);
   assert.equal(plan.execution.heavy_gpu_started, false);
   assert.equal(plan.stages.length, 10);
