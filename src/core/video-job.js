@@ -128,7 +128,7 @@ export function validateTakeContinuity(takes = []) {
       warnings.push("takes[" + index + "] não descreve o gancho deixado para o próximo take.");
     }
     if (index > 0 && !take.incoming_match) {
-      warnings.push("takes[" + index + "] não descreve como deve casar com o take anterior.");
+      warnings.push("takes[" + index + "].incoming_match não descreve como deve casar com o take anterior.");
     }
   });
 
