@@ -8,7 +8,7 @@ export const KIDS_VIDEO_AGENT_IDS = [
   "kids-story-planner",
   "kids-visual-dna-guard",
   "timeframe-engineer",
-  "motion-library-agent",
+  "take-continuity-agent",
   "video-generation-router",
   "transition-engineer",
   "davinci-timeline-agent",
@@ -21,7 +21,7 @@ const DEFAULT_STAGES = [
   { order: 2, agent_id: "kids-story-planner", adapter: "kids.microaction.brief", mode: "llm_on_decision" },
   { order: 3, agent_id: "kids-visual-dna-guard", adapter: "kids.dna.manifest", mode: "deterministic_then_review" },
   { order: 4, agent_id: "timeframe-engineer", adapter: "kids.timeframe.plan", mode: "deterministic_then_review" },
-  { order: 5, agent_id: "motion-library-agent", adapter: "kids.motion.library", mode: "deterministic" },
+  { order: 5, agent_id: "take-continuity-agent", adapter: "kids.take.handoff", mode: "deterministic_then_review" },
   { order: 6, agent_id: "video-generation-router", adapter: "video.router.kling", mode: "plan_only" },
   { order: 7, agent_id: "transition-engineer", adapter: "davinci.transition.plan", mode: "deterministic_then_review" },
   { order: 8, agent_id: "davinci-timeline-agent", adapter: "davinci.timeline.manifest", mode: "export_only" },
@@ -105,12 +105,41 @@ export function validateTimeframes(timeframes = [], durationLimit = KIDS_MAX_DUR
   return { valid: errors.length === 0, errors, warnings };
 }
 
+
+export function validateTakeContinuity(takes = []) {
+  const errors = [];
+  const warnings = [];
+  const normalized = asArray(takes);
+
+  normalized.forEach((take, index) => {
+    if (!take.start_frame_ref) {
+      warnings.push("takes[" + index + "] não possui start_frame_ref para validar a entrada visual.");
+    } else if (!isReference(take.start_frame_ref)) {
+      errors.push("takes[" + index + "].start_frame_ref precisa ser uma referência válida.");
+    }
+    if (!take.end_frame_ref) {
+      warnings.push("takes[" + index + "] não possui end_frame_ref para validar o gancho de saída.");
+    } else if (!isReference(take.end_frame_ref)) {
+      errors.push("takes[" + index + "].end_frame_ref precisa ser uma referência válida.");
+    }
+    if (!take.outgoing_hook) {
+      warnings.push("takes[" + index + "] não descreve o gancho deixado para o próximo take.");
+    }
+    if (index > 0 && !take.incoming_match) {
+      warnings.push("takes[" + index + "] não descreve como deve casar com o take anterior.");
+    }
+  });
+
+  return { valid: errors.length === 0, errors, warnings };
+}
+
 export function validateVideoJob(job = {}) {
   const errors = [];
   const warnings = [];
   const duration = Number(job.duration_limit_seconds);
   const dnaRefs = asArray(job.dna_refs || (job.dna_ref ? [job.dna_ref] : []));
   const timeframeValidation = validateTimeframes(job.video_plan?.timeframes, duration || KIDS_MAX_DURATION_SECONDS);
+  const continuityValidation = validateTakeContinuity(job.takes);
 
   if (!job.job_id || typeof job.job_id !== "string") errors.push("job_id é obrigatório.");
   if (job.route !== "TB_LAB_KIDS") errors.push("A v1 deste planejador aceita somente route=TB_LAB_KIDS.");
@@ -136,6 +165,8 @@ export function validateVideoJob(job = {}) {
 
   errors.push(...timeframeValidation.errors);
   warnings.push(...timeframeValidation.warnings);
+  errors.push(...continuityValidation.errors);
+  warnings.push(...continuityValidation.warnings);
 
   if (job.resource_policy?.gpu === "none") {
     warnings.push("Sem GPU: o job pode planejar, validar e exportar a timeline, mas a geração visual via Kling ficará aguardando recurso externo.");
@@ -186,7 +217,13 @@ export function planVideoJob(input = {}) {
       generation_provider: "Kling",
       timeline_target: "DaVinci Resolve",
       soundtrack_owner: "external_human_selected_asset",
-      accepted_soundtrack_providers: ["Suno", "manual"]
+      accepted_soundtrack_providers: ["Suno", "manual"],
+      continuity: {
+        inspect_take_boundaries: true,
+        handoff_required: true,
+        hook_policy: "end_of_take_n_must_prepare_start_of_take_n_plus_1",
+        boundary_fields: ["start_frame_ref", "end_frame_ref", "outgoing_hook", "incoming_match"]
+      }
     },
     resource: {
       gpu: job.resource_policy?.gpu || null,
@@ -224,6 +261,11 @@ export function buildKidsTake01Plan(overrides = {}) {
   const driveRoot = "drive://TB_LAB_KIDS/projetos/o-mundo-magico-de-melanca/episodios/001-guarda-guarda-guarda";
   const baseVideoPlan = {
     mode: "demonstration_microactions",
+    continuity_policy: {
+      inspect_start_and_end_frames: true,
+      preserve_final_state_as_next_take_hook: true,
+      reject_unmatched_handoffs: true
+    },
     max_timeframes: KIDS_MAX_TIMEFRAMES,
     timeframes: DEFAULT_GUARDA_TIMEFRAMES,
     transition_plan: [
@@ -275,6 +317,10 @@ export function buildKidsTake01Plan(overrides = {}) {
         cast: ["melanca", "melanca-friend-green"],
         primary_object: "trenzinho",
         frame_strategy: "frame-01 -> frame-02",
+        start_frame_ref: driveRoot + "/takes/take-01/frame-01.png",
+        end_frame_ref: driveRoot + "/takes/take-01/frame-02.png",
+        outgoing_hook: "o trenzinho termina em movimento e deixa a direção do próximo take visualmente aberta",
+        incoming_match: "o próximo take deve começar preservando a posição, direção e energia do trenzinho",
         action_chain: [
           "Melanca solta o trem",
           "o trem continua se movendo sozinho",
