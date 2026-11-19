@@ -5,91 +5,377 @@
       "id": "source-of-truth-before-implementation",
       "title": "Validar regras e modelo antes do código",
       "domain": "engineering",
-      "tags": ["architecture", "data-model", "contracts", "planning"],
+      "tags": [
+        "architecture",
+        "data-model",
+        "contracts",
+        "planning"
+      ],
       "summary": "Definir fonte da verdade, modelo de dados, invariantes e contrato antes de iniciar a implementação. Integrações externas devem ser tratadas como espelhos quando o domínio local é a fonte oficial.",
       "evidenceLevel": "curated",
-      "sources": ["repository architecture and data-model documents"]
+      "sources": [
+        "repository architecture and data-model documents"
+      ]
     },
     {
       "id": "bounded-contexts-and-invariants",
       "title": "Separar contextos e preservar invariantes",
       "domain": "engineering",
-      "tags": ["domain", "authorization", "business-rules", "audit"],
+      "tags": [
+        "domain",
+        "authorization",
+        "business-rules",
+        "audit"
+      ],
       "summary": "Separar contextos operacionais, comerciais, fiscais e logísticos. Modelar estados e transições explicitamente, manter cada regra perto do caso de uso responsável e impedir que uma visão gerencial altere silenciosamente a fonte operacional.",
       "evidenceLevel": "curated",
-      "sources": ["domain modeling and API contract documents"]
+      "sources": [
+        "domain modeling and API contract documents"
+      ]
     },
     {
       "id": "layered-use-case-architecture",
       "title": "Arquitetura em camadas com casos de uso",
       "domain": "software_architecture",
-      "tags": ["application", "domain", "gateway", "infrastructure", "read-model"],
+      "tags": [
+        "application",
+        "domain",
+        "gateway",
+        "infrastructure",
+        "read-model"
+      ],
       "summary": "Organizar a aplicação em apresentação, segurança, aplicação/casos de uso, domínio e infraestrutura. Usar gateways e adaptadores para isolar persistência e integrações, com DTOs e read models explícitos.",
       "evidenceLevel": "curated",
-      "sources": ["architecture diagrams and application packages"]
+      "sources": [
+        "architecture diagrams and application packages"
+      ]
     },
     {
       "id": "evidence-first-impact-analysis",
       "title": "Evidência, escopo e impacto rastreável",
       "domain": "quality",
-      "tags": ["impact-analysis", "evidence", "traceability", "legacy"],
+      "tags": [
+        "impact-analysis",
+        "evidence",
+        "traceability",
+        "legacy"
+      ],
       "summary": "Classificar impacto por evidência, registrar origem, linha, relacionamento e motivo, manter escopo local separado de dependências externas e não transformar ausência de resultado em aprovação.",
       "evidenceLevel": "curated",
-      "sources": ["impact-analysis and refactoring tool documents"]
+      "sources": [
+        "impact-analysis and refactoring tool documents"
+      ]
     },
     {
       "id": "patch-gates-and-permissions",
       "title": "Alterações controladas por gate",
       "domain": "security",
-      "tags": ["patch", "permissions", "hash", "validation", "manual-review"],
+      "tags": [
+        "patch",
+        "permissions",
+        "hash",
+        "validation",
+        "manual-review"
+      ],
       "summary": "Representar linhas ou unidades alteráveis com permissões, hashes e status. Validar limites de área, preservar conteúdo fora do escopo, registrar diffs e encaminhar casos ambíguos para intervenção manual.",
       "evidenceLevel": "curated",
-      "sources": ["patch gate implementation and validation tests"]
+      "sources": [
+        "patch gate implementation and validation tests"
+      ]
     },
     {
       "id": "external-source-uncertainty",
       "title": "Fontes externas têm status e limites explícitos",
       "domain": "research",
-      "tags": ["source-status", "uncertainty", "read-only", "market-data"],
+      "tags": [
+        "source-status",
+        "uncertainty",
+        "read-only",
+        "market-data"
+      ],
       "summary": "Registrar fonte, horário, quantidade, falhas e idade dos dados. Diferenciar ausência de alerta de segurança, pesquisa de recomendação e dado atual de histórico. Não operar nem armazenar credenciais quando a capacidade é somente informativa.",
       "evidenceLevel": "curated",
-      "sources": ["read-only research architecture and event tests"]
+      "sources": [
+        "read-only research architecture and event tests"
+      ]
     },
     {
       "id": "quality-gates-and-release-evidence",
       "title": "Cada bloco precisa de validação proporcional",
       "domain": "delivery",
-      "tags": ["tests", "ci", "postman", "coverage", "release"],
+      "tags": [
+        "tests",
+        "ci",
+        "postman",
+        "coverage",
+        "release"
+      ],
       "summary": "Manter testes unitários e E2E, contratos e coleções atualizados, quality gate por bloco funcional e evidências de homologação. Só promover uma versão com CI verde e validação real do fluxo.",
       "evidenceLevel": "curated",
-      "sources": ["CI, test, Postman and release documents"]
+      "sources": [
+        "CI, test, Postman and release documents"
+      ]
     },
     {
       "id": "product-lab-history",
       "title": "Evolução registrada em laboratórios",
       "domain": "product",
-      "tags": ["decision-log", "labs", "evolution", "documentation"],
+      "tags": [
+        "decision-log",
+        "labs",
+        "evolution",
+        "documentation"
+      ],
       "summary": "Preservar a história do produto em ciclos separados. Cada laboratório registra contexto, problema, objetivo, entregas, decisões, evidências, validações e próximos passos sem reescrever o passado.",
       "evidenceLevel": "curated",
-      "sources": ["showcase laboratory documentation"]
+      "sources": [
+        "showcase laboratory documentation"
+      ]
     },
     {
       "id": "creative-production-gates",
       "title": "Produção criativa por etapas e continuidade",
       "domain": "creative",
-      "tags": ["production", "continuity", "cost", "review"],
+      "tags": [
+        "production",
+        "continuity",
+        "cost",
+        "review"
+      ],
       "summary": "Separar conceito, roteiro, cenas, imagens, movimento, montagem, áudio e finalização. Gerar com IA apenas o que exige geração, reaproveitar estados aprovados e validar continuidade antes de avançar.",
       "evidenceLevel": "curated",
-      "sources": ["creative production flow and visual guide documents"]
+      "sources": [
+        "creative production flow and visual guide documents"
+      ]
     },
     {
       "id": "clarity-over-decoration",
       "title": "Clareza da ação acima da decoração",
-      "domain": "ux", 
-      "tags": ["visual-hierarchy", "accessibility", "continuity", "focus"],
+      "domain": "ux",
+      "tags": [
+        "visual-hierarchy",
+        "accessibility",
+        "continuity",
+        "focus"
+      ],
       "summary": "Priorizar ação, reação, consequência e hierarquia visual. Remover elementos sem função, preservar espaço para movimento e usar status legíveis em vez de complexidade ornamental.",
       "evidenceLevel": "curated",
-      "sources": ["visual production and interface specification documents"]
+      "sources": [
+        "visual production and interface specification documents"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-v2-architecture",
+      "title": "QDT V2 — arquitetura e fonte canônica",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "Python",
+        "FastAPI",
+        "SQLite",
+        "arquitetura",
+        "integrações"
+      ],
+      "summary": "API_QDT_BOT é fonte de verdade operacional. V2 substitui execução Docker/n8n/Evolution/Guard por monólito modular Python/FastAPI, SQLite e cofre cifrado; V1 preservada. DEV: receptor 8083 e LAB 8084 privado, túnel HTTPS fixo, bancos separados do ambiente oficial; não presumir runtime ativo. Meta Cloud API, Calendar, Drive, Document AI e OpenAI com credenciais isoladas. Modelo de negócio ainda não aprovado; não criar tabelas de negócio por inferência. Checkpoint canônico na feature, main e VM só com aceite.",
+      "evidenceLevel": "verified_project_checkpoint",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-meta-transport",
+      "title": "QDT V2 — webhook e Flow bidirecional",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "Meta",
+        "webhook",
+        "Flow",
+        "debug",
+        "segurança",
+        "testes"
+      ],
+      "summary": "Ciclo real DEV comprovado: entrada assinada, persistência, envio draft, status SENT/DELIVERED/READ, seleção e recebimento nfm_reply no SQLite. HTTP 400 de tela resolvido alinhando JSON cadastrado na Meta ao Git; nfm_reply antes descartado pela allowlist de tipos, corrigido em captura local/test. HTTP 200 isolado não comprova persistência nem entrega. Claim durável, sem replay automático em resultado incerto; sessão opt-in restrita ao contato autorizado, 15 min/20 envios. LAB loopback e Debug sanitizado. Token/resposta ainda não validados para prosseguir negócio.",
+      "evidenceLevel": "real_operator_evidence",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/commit/36c54f4204f19268ec0857cfbc7d1f764d24d009"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-calendar-legacy",
+      "title": "QDT V2 — agenda real, identidade e compatibilidade legado",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "calendar",
+        "agenda",
+        "legado",
+        "disponibilidade",
+        "testes"
+      ],
+      "summary": "Calendar OAuth calendar.events: FreeBusy e calendarList retornaram 403, events.list autenticado funcionou. Validar ID canônico configurado, não nome visual/summary; não usar ICS secreto. Expandir recorrências, paginar e interpretar intervalos com fim exclusivo e fuso America/Sao_Paulo. Reserva legado pode estar transparent; cor não define ocupação. Bloquear evento desconhecido, ignorar cancelados e exceções administrativas estritas; despesa de produtos reconhecida por título completo e transparência. Sobreposição com reserva mantém bloqueio. Pré-reserva herdada aguardando pagamento não deve ser liberada por inferência. Matrizes reais aceitas pelo operador: novembro 24 sem bloqueio/6 ocupados; dezembro 19/12. Não divulgar eventos individuais.",
+      "evidenceLevel": "real_operator_evidence",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/qdt_v2/integrations/calendar_matrix.py",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/tests/test_calendar_matrix.py"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-calendar-flow-snapshot",
+      "title": "QDT V2 — disponibilidade dinâmica no WhatsApp Flow",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "Flow",
+        "agenda",
+        "snapshot",
+        "contrato",
+        "homologação"
+      ],
+      "summary": "Implementado na feature, não homologado no aparelho: antes de cada FLOW_DRAFT consultar matriz Google nova; min_date/max_date e unavailable_dates via payload, janela proposta 90 dias desde amanhã. Apenas limites e datas ISO, sem títulos/IDs de eventos; falha Google ou janela cheia impede POST Meta. Sem cache/fallback fictício; preço segue ilustrativo. Snapshot atualiza no novo envio, não na abertura de mensagem antiga. Próximo gate: testes offline, salvar JSON dinâmico no mesmo draft Meta, validar schema/preview, reiniciar LAB e testar no celular. Não publicar. Próximo passo após captura: correlacionar token/sessão/contato, expiração, esquema, idempotência e reconsultar data; data_exchange protegido se necessário.",
+      "evidenceLevel": "implemented_not_yet_validated",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/flows/agenda-homologacao.json",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/qdt_v2/integrations/meta_live_client.py",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/tests/test_live_exchange.py"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-owner-domain-invariants",
+      "title": "QDT V2 — regras aprovadas e responsabilidades do produto",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "reserva",
+        "agenda",
+        "financeiro",
+        "pagamento",
+        "proprietários",
+        "modelo de dados"
+      ],
+      "summary": "IA coleta/interpreta, API aplica regras determinísticas, proprietários validam e administram; OCR não comprova pagamento. Google Calendar tem relevância operacional de ocupação/reconciliação; banco QDT é autoridade de regras/financeiro. Layout Google aprovado: título Nome - Valor total, descrição Valor do sinal, período nativo; detalhes e controles somente na plataforma administrativa. Selecionar não é reservar; pré-reserva 2h só com intenção explícita, confirmação por proprietário. Cadastro único, remarcação/atualização por ID estável e cancelamento autorizado, sem duplicar ou apagar legado. Escrita, concorrência, expiração e reconciliação ainda futuros e dependem de modelo aprovado. Alertas push iniciais só evento/reserva/pagamento. Tarifas e cores ainda requerem regras aprovadas.",
+      "evidenceLevel": "approved_design_not_implemented",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESCOPO_FUNCIONAL_CONSOLIDADO.md"
+      ]
+    },
+    {
+      "project": "QDT V2",
+      "projects": [
+        "Quintal do Tuta",
+        "API_QDT_BOT",
+        "Bot de WhatsApp"
+      ],
+      "domain": "technology",
+      "id": "qdt-integrator-evidence-and-release",
+      "title": "QDT V2 — evidências, limites e retomada",
+      "tags": [
+        "QDT",
+        "Quintal",
+        "WhatsApp",
+        "API_QDT_BOT",
+        "integrações",
+        "testes",
+        "CI",
+        "release",
+        "documentação"
+      ],
+      "summary": "Meta bidirecional e leitura Calendar reais comprovadas; Drive autenticação/leitura, Document AI OCR sintético e OpenAI inferência de teste comprovados individualmente, não integrados ao atendimento. Seis testes de matriz passaram localmente; operador aceitou matriz posterior; não há log completo dos nove nem regressão da integração Flow dinâmica. Baseline CI anterior ao Flow dinâmico não prova revisão atual. Não repetir operações externas sem necessidade; sem gravação real de Calendar ou promoção main/VM. Atualizar documentação e checkpoint a cada achado/implementação, associando evidência, commit, limitações e próxima ação. Retomar pela seção vigente do handoff.",
+      "evidenceLevel": "mixed_verified_and_pending",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
+      ]
+    },
+    {
+      "id": "signed-event-delivery-and-durable-claims",
+      "title": "Integração de eventos — entrega comprovada e claim durável",
+      "domain": "engineering",
+      "tags": [
+        "webhook",
+        "idempotência",
+        "deduplicação",
+        "assinatura",
+        "status",
+        "replay",
+        "segurança",
+        "integration"
+      ],
+      "summary": "Padrão reutilizável observado no QDT: verificar assinatura e identidade da conta/remetente, armazenar envelope autorizado com chave única antes de processar, claim durável antes de efeito externo e não repetir automaticamente desfecho incerto. Separar aceitação HTTP, persistência, aceite do provedor e entrega/leitura correlacionada. Instrumentar rastros sanitizados. Adaptar autorização ao domínio; não assumir que captura equivale a validação do conteúdo.",
+      "evidenceLevel": "verified_project_pattern",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md"
+      ]
+    },
+    {
+      "id": "legacy-aware-availability-snapshots",
+      "title": "Disponibilidade de legado — classificação conservadora e revalidação",
+      "domain": "engineering",
+      "tags": [
+        "agenda",
+        "calendar",
+        "legacy",
+        "snapshot",
+        "availability",
+        "fail-closed",
+        "contrato",
+        "reconciliação"
+      ],
+      "summary": "Padrão reutilizável: validar identidade estável da fonte, consultar intervalo paginado e recorrências; não confiar em rótulo, cor ou flag externa como regra universal. Comparar matriz com amostra real, exceções administrativas estreitas, desconhecido bloqueia. Separar snapshot de consulta e autorização de escrita; revalidar disponibilidade e aplicar controle transacional antes da reserva. Falha não vira lista vazia. Integrador em teste não é adaptador conectado ao Command Center.",
+      "evidenceLevel": "verified_read_pattern_write_pending",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md"
+      ]
     }
   ]
 }
