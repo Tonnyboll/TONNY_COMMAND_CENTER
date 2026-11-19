@@ -133,6 +133,12 @@ Regras:
 
 A `main` de cada repositório é sua versão integrada. A hierarquia entre os repositórios continua sendo comandada pelo `TONNY_COMMAND_CENTER`.
 
+## Sincronização de inteligência por marco
+
+Em contexto formal ativado, ao fechar implementação ou achado importante, atualizar o checkpoint e a documentação da fonte de verdade do projeto. Quando o usuário solicitar sincronização com o Command Center, indexar os resumos recuperáveis em `knowledge/curated.json`, atualizar `projects/registry.md` e, se pertinente, capacidades, decisões e missões. Conferir fonte, commit, estado comprovado, limites, divergências e próxima ação. Não copiar dados pessoais, credenciais ou registros operacionais; manter fontes privadas sob suas permissões. Não confundir catálogo recuperável com adaptador conectado ou execução autônoma.
+
+Para QDT V2, Bot de WhatsApp / Quintal do Tuta, seguir o registro em `projects/registry.md` e o handoff vigente de `Tonnyboll/API_QDT_BOT`. Reutilizar agentes existentes conforme escopo, sem duplicar as regras do domínio. Main e ambientes oficiais permanecem protegidos até autorização e validação.
+
 ## Limites atuais
 
 Este protocolo orienta o trabalho neste projeto e nesta conversa. Ele não muda automaticamente outras conversas, não concede acesso a aplicativos e não cria monitoramento contínuo. Cada integração precisa ser configurada e verificada.
