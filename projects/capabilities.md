@@ -177,3 +177,18 @@ Resumo operacional:
 - o mesmo agente pode atender outro braço somente com `route`, DNA e ativos explicitamente trocados.
 
 Esse contrato não aprova automaticamente nenhuma ferramenta. A shortlist e o estado de cada capacidade continuam registrados neste catálogo.
+
+## Aprendizados reutilizáveis — QDT V2 (19/11/2026)
+
+Fonte de evidência: [checkpoint QDT em 0ddc5ed](https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md). Capacidade comprovada no projeto **não** significa adaptador executável no Command Center. Reutilizar os padrões, não credenciais, dados ou regras específicas de preços.
+
+| Capacidade | Estado no projeto de origem | Agentes já registrados | Limite / rota |
+| --- | --- | --- | --- |
+| Webhook assinado, inbox deduplicada, claim durável e status correlacionado | APROVADA como padrão; Meta real DEV comprovada | api-reviewer, security-auditor, architect-review, qa-specialist | QDT; candidatas outras APIs de eventos, com novo contrato/autorização. Sem replay de efeito externo incerto. |
+| Disponibilidade operacional de legado, normalização temporal e snapshot fail-closed | APROVADA para leitura QDT; matrizes reais confrontadas | architect-review, api-reviewer, qa-specialist | QDT; aplicável a agenda/recursos de outros projetos após validação. Nenhuma escrita habilitada. |
+| Interface estruturada WhatsApp Flow | Transporte estático VALIDADO; datas dinâmicas EM TESTE | api-reviewer, implementation-agent, qa-specialist, security-auditor | QDT; não publicar automaticamente, não confiar em retorno antes de correlacionar token e revalidar. |
+| Cofre de integrações, observabilidade sanitizada e separação teste/produção | Padrões comprovados no QDT; adaptador central pendente | security-auditor, architect-review, implementation-agent | Outros projetos somente com escopo e autorização próprios. |
+| OCR de comprovante e interpretação de atendimento | OCR sintético e inferência isolada comprovados; orquestração de negócio EM TESTE/PENDENTE | api-reviewer, security-auditor, qa-specialist | QDT; OCR não valida liquidação; aprovação humana e motor determinístico. |
+| Quality gate por evidência e checkpoint permanente | APROVADA pelo proprietário no QDT | qa-specialist, implementation-agent, architect-review | Cada marco relevante documenta fonte, evidência, commit, limitações e retomada. |
+
+Conhecimento recuperável: entradas `qdt-*`, `signed-event-delivery-and-durable-claims` e `legacy-aware-availability-snapshots` em `knowledge/curated.json`. Reutilizar o registry existente (`src/core/registry.js`); não criar agentes duplicados. Os agentes acima são rotas de planejamento já disponíveis, não alegação de execução autônoma de ferramentas.
