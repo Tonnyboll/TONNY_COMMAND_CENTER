@@ -22,12 +22,17 @@ function inferDomain(message) {
 function inferProjectName(message, { knownProjects = [] } = {}) {
   const normalizedMessage = message.toLocaleLowerCase("pt-BR");
   const ignoredProjectTokens = new Set(["tony", "api", "command", "center", "studios"]);
+  const messageTokens = new Set(normalizedMessage.split(/[^\p{L}\p{N}]+/u));
   const knownProject = knownProjects.find((project) => {
     const projectTokens = String(project)
       .toLocaleLowerCase("pt-BR")
       .split(/[^\p{L}\p{N}]+/u)
       .filter((token) => token.length > 3 && !ignoredProjectTokens.has(token));
-    return projectTokens.some((token) => normalizedMessage.includes(token));
+    // Project acronyms such as QDT are meaningful even below four letters.
+    // Match only complete uppercase acronym tokens to avoid substring collisions.
+    const acronymTokens = String(project).match(/\b[A-Z]{3}\b/g) || [];
+    return acronymTokens.some((token) => !ignoredProjectTokens.has(token.toLowerCase()) && messageTokens.has(token.toLowerCase())) ||
+      projectTokens.some((token) => normalizedMessage.includes(token));
   });
   if (knownProject) return knownProject;
   const match = message.match(/\b(?:sobre|de|para)\s+(.+)$/i);
