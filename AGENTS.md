@@ -139,6 +139,18 @@ Em contexto formal ativado, ao fechar implementação ou achado importante, atua
 
 Para QDT V2, Bot de WhatsApp / Quintal do Tuta, seguir o registro em `projects/registry.md` e o handoff vigente de `Tonnyboll/API_QDT_BOT`. Reutilizar agentes existentes conforme escopo, sem duplicar as regras do domínio. Main e ambientes oficiais permanecem protegidos até autorização e validação.
 
+## Validação local e controle de custos de CI (24/11/2026)
+
+Regra global para todos os projetos tecnológicos: enquanto o GitHub Actions hospedado estiver bloqueado por faturamento/orçamento, manter GitHub para versionamento e executar os testes localmente, sem depender de CI remoto para avançar. Não aumentar orçamento, alterar cartão, contratar plano, tornar repositório público ou liberar cobrança sem autorização explícita.
+
+- Reaproveitar a suíte e o comando oficial de cada projeto. QDT: `git pull` e `.\qdt.ps1 -Testar` (PowerShell).
+- Não reduzir cobertura, desabilitar testes, falsificar sucesso, ignorar proteção de branch nem liberar produção sem evidência suficiente. Registrar commit testado, ambiente, comando, resultados e pendências, incluindo integração e segurança proporcionais ao risco.
+- Se não houver executor local conectado, solicitar execução ao operador e analisar o retorno. Inspeção estática não equivale a teste executado.
+- Distinguir CI indisponível por infraestrutura/faturamento de falha de código; manter estado **CI REMOTO BLOQUEADO / VALIDAÇÃO LOCAL PENDENTE** até obter evidências locais. Após os testes locais comprovados, o gate pode ser satisfeito por essa evidência equivalente, respeitando proteções existentes e autorização de release.
+- Quando o usuário regularizar o faturamento e autorizar retomada, conferir runner-probe e regressão; preferir CI em marcos, PRs e integração da main, cancelando execuções obsoletas quando aplicável. Não remover workflows nem alterar triggers de outros projetos sem escopo autorizado.
+
+Fonte: [decisão global](decisions/D-2026-11-24-CI-local-first.md).
+
 ## Limites atuais
 
 Este protocolo orienta o trabalho neste projeto e nesta conversa. Ele não muda automaticamente outras conversas, não concede acesso a aplicativos e não cria monitoramento contínuo. Cada integração precisa ser configurada e verificada.

@@ -33,3 +33,7 @@ Adicionar novas fontes, APIs e responsáveis somente após verificação. Contex
 - Sequência: Command Center/AGENTS.md → registry → knowledge/curated.json → [handoff vigente](https://github.com/Tonnyboll/API_QDT_BOT/blob/feature/qdt-v2-fase0-integracoes/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md) → escopo/README/contratos/testes do projeto.
 - O catálogo identifica o projeto e recupera conhecimento no runtime; integração automática de ferramentas externas do Command Center ainda não existe. Nunca copiar credenciais, IDs de clientes, payloads, contatos ou dados operacionais brutos.
 - Registro durável: [D-2026-11-19-QDT](../decisions/D-2026-11-19-QDT.md); missão de sincronização: [M-2026-11-19-QDT](../missions/M-2026-11-19-QDT.md). Capacidades: [catálogo](capabilities.md).
+
+## Regra transversal de entrega (24/11/2026)
+
+Aplicar [CI local-first](../decisions/D-2026-11-24-CI-local-first.md) em todos os projetos tecnológicos enquanto o GitHub Actions estiver bloqueado. Versionamento normal, testes locais comprovados, gates preservados e nenhum gasto adicional sem autorização. QDT: `git pull` + `.\qdt.ps1 -Testar`. Retomada do CI hospedado somente após regularização e autorização.
