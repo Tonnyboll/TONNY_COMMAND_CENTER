@@ -334,7 +334,7 @@
         "release",
         "documentação"
       ],
-      "summary": "23/11: SAC real, disponibilidade, vídeo e preço no LAB comprovados; Pix 403 por trava pré-autenticação; identificação sem persistência. Debug externo 8085 pendente. Política de prazo versionada sem rotas/worker/banco. Aceite apenas integral: reserva, alteração, cancelamento, pagamentos, caixa, Google e WhatsApp, sem demos. Auditoria estática parcial 6/10, 5,1 atual/8,4 potencial, quatro faltantes. Sem deploy, migrations ou confirmação real de pagamento; consultar CONTEXTO_QDT.md.",
+      "summary": "23/11: SAC real, disponibilidade, vídeo e preço no LAB comprovados; Pix 403 por trava pré-autenticação; identificação sem persistência. Debug externo 8085 pendente. Política de prazo versionada sem rotas/worker/banco. Aceite apenas integral: reserva, alteração, cancelamento, pagamentos, caixa, Google e WhatsApp, sem demos. Auditoria estática 10/10 recebidos, média 4,75 atual/8,40 potencial, mesmo SHA entre rodadas a confirmar. Direção monólito modular/SQLite único favorável sob condições; modelo físico, segurança, transação local com outbox, reconciliação e gate integrado pendentes. Sem deploy, migrations ou confirmação real de pagamento; consultar CONTEXTO_QDT.md.",
       "evidenceLevel": "mixed_verified_and_pending",
       "sources": [
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",

@@ -196,7 +196,7 @@ Conhecimento recuperável: entradas `qdt-*`, `signed-event-delivery-and-durable-
 
 ## Especialistas wshobson — engenharia (23/11/2026)
 
-Fonte: [wshobson/agents](https://github.com/wshobson/agents). Dez TOML instalados no Codex CLI 0.172.0 conforme operador; seis pareceres entregues, quatro incompatibilidades de modelo corrigidas, nova execução pendente. Registro não comprova executor conectado. Reutilizar papéis canônicos, sem duplicar existentes.
+Fonte: [wshobson/agents](https://github.com/wshobson/agents). Dez TOML instalados no Codex CLI 0.172.0 conforme operador; dez pareceres recebidos em duas rodadas após correção de quatro incompatibilidades de modelo; execução no Codex local comprovada pelo relato do operador, mesmo snapshot ainda a confirmar. Registro não comprova executor conectado. Reutilizar papéis canônicos, sem duplicar existentes.
 
 | Papel | Perfil externo | Foco |
 |---|---|---|

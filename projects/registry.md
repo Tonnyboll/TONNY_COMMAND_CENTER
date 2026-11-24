@@ -30,7 +30,7 @@ Adicionar novas fontes, APIs e responsáveis somente após verificação. Contex
 
 - Frente oficial exclusiva: `feature/qdt-v2-admin-painel`. Fonte: [CONTEXTO_QDT.md em f459048](https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md). Verificar HEAD antes de atuar. A referência antiga abaixo é histórica.
 - TESTES REAIS QDT: receptor 8083, LAB privado 8084, portal cliente 8085 (mesma aplicação cliente), supervisor qdt.ps1. SAC real comprovado. Reserva, alteração, cancelamento, pagamento e financeiro ainda precisam integração persistida. Prazo: 20 s homologação, 5 min futura produção; domínio implementado, worker/rotas/banco pendentes.
-- Auditoria estática 6/10, notas indicativas 5,1 atual e 8,4 potencial. Quatro perfis falharam por modelo incompatível; operador corrigiu configuração, reexecução sem evidência ainda. Arquitetura em avaliação, monólito modular + SQLite único por ambiente como direção preliminar. Aceite somente integrado, sem dados fictícios. Não modificar main/VM/banco QDT durante auditoria.
+- Auditoria estática: 10/10 pareceres recebidos após correção dos modelos; média simples 4,75 atual e 8,40 potencial. Mesmo SHA entre rodadas ainda a confirmar; sem testes ou validação operacional. Modelo físico e arquitetura ainda sujeitos à decisão do proprietário. Arquitetura em avaliação, monólito modular + SQLite único por ambiente como direção preliminar. Aceite somente integrado, sem dados fictícios. Não modificar main/VM/banco QDT durante auditoria.
 - [Decisão e estado da auditoria](../decisions/D-2026-11-23-QDT-audit.md). Executor externo do Command Center ainda não conectado.
 
 ## QDT V2 — checkpoint histórico (19/11/2026; superado acima)
