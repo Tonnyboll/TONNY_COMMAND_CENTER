@@ -185,9 +185,11 @@
         "arquitetura",
         "integrações"
       ],
-      "summary": "Fonte vigente API_QDT_BOT, feature/qdt-v2-admin-painel. DEV receptor 8083, LAB privado 8084, cliente 8085, mesma aplicação cliente e assets; qdt.ps1 terminal único. Google disponibilidade + ocupação local, preço e Drive leitura real. Identidade/reserva/pagamento/caixa integrados pendentes. Monólito modular e SQLite único por ambiente recomendação preliminar da auditoria, modelo físico em avaliação. Legado preservado, não presumir retirada de Docker/n8n/Redis/Postgres nem VM pronta.",
+      "summary": "Fonte vigente API_QDT_BOT, feature/qdt-v2-admin-painel. DEV receptor 8083, LAB privado 8084, cliente 8085, mesma aplicação cliente e assets; qdt.ps1 terminal único. Google disponibilidade + ocupação local, preço e Drive leitura real. Identidade/reserva/pagamento/caixa integrados pendentes. Direção monólito modular e SQLite único delegada para desenvolvimento; modelo inicial e migração explícita versionados, sem executar no banco operacional. Núcleo transacional implementado sem exposição pública. Gate CI bloqueado; integrar autenticação, rotas, workers e financeiro integral antes de homologar. Legado preservado, não presumir retirada de Docker/n8n/Redis/Postgres nem VM pronta.",
       "evidenceLevel": "verified_project_checkpoint",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/c654aa24b0d0b0a74d57f27f451d282d10352af2/CONTEXTO_QDT.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/c654aa24b0d0b0a74d57f27f451d282d10352af2/docs/QDT_V2_EVOLUCAO_95_2026-11-23.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
@@ -334,9 +336,10 @@
         "release",
         "documentação"
       ],
-      "summary": "23/11: SAC real, disponibilidade, vídeo e preço no LAB comprovados; Pix 403 por trava pré-autenticação; identificação sem persistência. Debug externo 8085 pendente. Política de prazo versionada sem rotas/worker/banco. Aceite apenas integral: reserva, alteração, cancelamento, pagamentos, caixa, Google e WhatsApp, sem demos. Auditoria estática 10/10 recebidos, média 4,75 atual/8,40 potencial, mesmo SHA entre rodadas a confirmar. Direção monólito modular/SQLite único favorável sob condições; modelo físico, segurança, transação local com outbox, reconciliação e gate integrado pendentes. Sem deploy, migrations ou confirmação real de pagamento; consultar CONTEXTO_QDT.md.",
+      "summary": "23/11: SAC real, disponibilidade, vídeo e preço no LAB comprovados; Pix 403 por trava pré-autenticação; identificação sem persistência. Debug externo 8085 pendente. Política de prazo versionada sem rotas/worker/banco. Aceite apenas integral: reserva, alteração, cancelamento, pagamentos, caixa, Google e WhatsApp, sem demos. Auditoria estática 10/10 recebidos, média 4,75 atual/8,40 potencial, mesmo SHA entre rodadas a confirmar. Direção monólito modular/SQLite único favorável sob condições; modelo físico, segurança, transação local com outbox, reconciliação e gate integrado pendentes. Sem deploy, migrations ou confirmação real de pagamento; consultar CONTEXTO_QDT.md. Marco pós-auditoria: usuário delegou codificação/arquitetura. Oito testes de transação adicionados, CI falhou/cancelou sem logs/etapas, sem prova de regressão. Não testar fragmentos com operador; entrega integral e nova auditoria.",
       "evidenceLevel": "mixed_verified_and_pending",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/c654aa24b0d0b0a74d57f27f451d282d10352af2/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"

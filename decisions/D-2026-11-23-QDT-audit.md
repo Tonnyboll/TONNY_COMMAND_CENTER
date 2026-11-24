@@ -43,3 +43,8 @@ Direção preliminar: monólito modular, SQLite único por ambiente, domínio tr
 Aceite QDT integral: reservar, alterar, cancelar, expirar em 20 s homologação (300 s futura produção), pagamento manual, proprietário/financeiro, Google e WhatsApp. Política pura de prazo implementada, não ligada a worker/banco/rotas. Não promover main, implantar VM, migrar ou desenvolver a jornada antes de consolidar auditoria e decidir modelo. Não repetir discussão de regras funcionais já aprovadas.
 
 Padrão geral: equipe mínima por capacidade; dez perfis no gate de arquitetura, mesmo commit, somente leitura. Relatório com evidência arquivo/linha, riscos, recomendações, impacto, esforço, benefícios, notas, média dos pareceres válidos e cobertura. Falha não tem nota; repetir faltantes, não aprovar incompleto. Registro no Command Center não equivale a execução externa. Codex local é executor do operador; adaptador central ainda pendente. Sincronizar contexto a cada marco.
+
+
+## Evolução delegada pelo proprietário — checkpoint posterior
+
+Direção técnica aprovada para desenvolvimento, não produção. [Contexto vigente](https://github.com/Tonnyboll/API_QDT_BOT/blob/c654aa24b0d0b0a74d57f27f451d282d10352af2/CONTEXTO_QDT.md), [modelo e gate](https://github.com/Tonnyboll/API_QDT_BOT/blob/c654aa24b0d0b0a74d57f27f451d282d10352af2/docs/QDT_V2_EVOLUCAO_95_2026-11-23.md). Núcleo transacional e migração opt-in versionados, nenhum efeito externo/operacional. CI 45313763271 e 45313921388 falharam/cancelaram sem evidência de teste; não atribuir nova nota. Entrega integrada antes de homologação, sem pedir aprovação de fragmentos. Não misturar este checkpoint com o snapshot da auditoria anterior.
