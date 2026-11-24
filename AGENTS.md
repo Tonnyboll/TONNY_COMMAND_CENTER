@@ -155,6 +155,12 @@ Regra global para todos os projetos tecnológicos: enquanto o GitHub Actions hos
 
 Fonte: [decisão global](decisions/D-2026-11-24-CI-local-first.md).
 
+## QDT — sonda de integridade e resiliência (24/11/2026)
+
+QDT V2: 8083 transporte Meta; 8084 LAB/sonda de arquitetura, dados, integridade e resiliência; 8085 cliente; 8086 proprietário. Uma fonte de verdade por ambiente, sem duplicar regras; LAB não é dependência operacional nem rota pública. 8086 reutiliza interface e read model do LAB, leitura DEV protegida, integrada ao supervisor no código; execução local ainda pendente. Cobertura integral da sonda NÃO comprovada. Ordem obrigatória: completar separação e sonda → testar quatro portas e invariantes, falhas/reconciliação → só após aceite, nova auditoria Codex 10 agentes mesmo SHA → corrigir, validar e consolidar lições. Meta 9,5 é objetivo. CI local-first; uv piloto, lock local ainda não versionado; não generalizar antes da homologação. OTP template pendente. Sem deploy/main QDT/VM.
+
+Consultar [checkpoint QDT](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md) e [handoff](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md); registro: [decisão](decisions/D-2026-11-24-QDT-sonda.md). Não considerar a capacidade homologada nem a auditoria executada. Reaproveitar os dez agentes oficiais no Codex local, sem duplicá-los; executor não presumido conectado. Não propagar uv ou Quality Gate seletivo como padrão global aprovado antes de evidências do piloto.
+
 ## Limites atuais
 
 Este protocolo orienta o trabalho neste projeto e nesta conversa. Ele não muda automaticamente outras conversas, não concede acesso a aplicativos e não cria monitoramento contínuo. Cada integração precisa ser configurada e verificada.

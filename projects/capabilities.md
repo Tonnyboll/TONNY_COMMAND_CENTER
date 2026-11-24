@@ -212,3 +212,10 @@ Fonte: [wshobson/agents](https://github.com/wshobson/agents). Dez TOML instalado
 | observability-engineer | observability-monitoring__observability-engineer | Observabilidade |
 
 Rotas: engenharia QDT, Félix, Chave Perto e demais projetos autorizados. Escolher equipe mínima na rotina; dez no gate oficial. Codex local é executor do operador, adaptador central pendente. Nunca instalar na VM de negócio. [Protocolo](../decisions/D-2026-11-23-QDT-audit.md).
+
+## Piloto QDT — sonda e testes inteligentes (24/11/2026)
+
+- Sonda de arquitetura e dados (observability-engineer, architect-review, database-architect, security-auditor, devops-troubleshooter): contrato aprovado; instrumentação/cobertura integral, reconciliação e resiliência pendentes. Não classificar como capacidade homologada.
+- Quality Gate com análise de impacto (qa-specialist/test-automator, code-reviewer): proposta aprovada, implementação e validação pendentes. Fallback regressão completa, evidência por SHA/hash e lock, sem reduzir testes.
+- uv (implementation-agent, performance-engineer): piloto instalado, medidas locais registradas; lock versionado e aceite integral pendentes. Não impor a outros projetos antes da homologação.
+- Auditoria oficial: 10 agentes existentes via Codex local, somente após aprovação do teste integrado das quatro portas. [Fonte](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md).
