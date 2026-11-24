@@ -142,7 +142,14 @@ const DEFAULT_AGENTS = [
     costLevel: "low",
     parallelizable: false,
     confidenceRequired: "high"
-  }
+  },
+  {"id":"database-architect","domain":"engineering","capabilities":["database_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"backend-architect","domain":"technology","capabilities":["backend_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"performance-engineer","domain":"engineering","capabilities":["performance_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"code-reviewer","domain":"engineering","capabilities":["code_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"context-manager","domain":"engineering","capabilities":["context_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"devops-troubleshooter","domain":"engineering","capabilities":["deployment_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"},
+  {"id":"observability-engineer","domain":"engineering","capabilities":["observability_review"],"tools":["filesystem","code_analysis"],"costLevel":"medium","parallelizable":true,"confidenceRequired":"high"}
 ];
 
 export class AgentRegistry {

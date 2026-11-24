@@ -1,3 +1,4 @@
+import { isArchitectureAudit } from "./architecture-audit.js";
 const ACTIVATION_PATTERN = /\b(iniciar|começar|comecar|criar|abrir|ativar)\b[\s\S]{0,80}\b(projeto|missão|missao|contexto)\b/i;
 const ACTION_PATTERN = /\b(verifica|verificar|analisa|analisar|investiga|investigar|implementa|implementar|corrige|corrigir|revisa|revisar|planeja|planejar|executa|executar|olha|ajuste|ajustar|altera|alterar|modifica|modificar|homologa|homologar|evolui|evoluir|refatora|refatorar)\b/i;
 
@@ -55,7 +56,7 @@ export class IntentRouter {
         projectName: inferProjectName(text, { knownProjects })
       };
     }
-    if (activeProject && ACTION_PATTERN.test(text)) {
+    if (activeProject && (ACTION_PATTERN.test(text) || isArchitectureAudit(text))) {
       return { type: "mission_request", domain: activeProject.domain, projectId: activeProject.id };
     }
     if (activeProject) return { type: "project_message", domain: activeProject.domain, projectId: activeProject.id };

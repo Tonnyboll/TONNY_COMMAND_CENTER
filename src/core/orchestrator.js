@@ -1,3 +1,4 @@
+import { isArchitectureAudit, planArchitectureAudit } from "./architecture-audit.js";
 const IMPLEMENTATION_PATTERN = /\b(ajuste|ajustar|alterar|alteração|alteracao|corrigir|correção|correcao|implementar|migrar|homologar|homologação|homologacao|evoluir|evolução|evolucao|refatorar|deploy|bug|regressão|regressao)\b/i;
 const API_PATTERN = /\b(api|endpoint|contrato|schema|gateway|integração|integracao|http|rest|backend|webhook)\b/i;
 const DOMAIN_PATTERN = /\b(domínio|dominio|regra|invariante|orçamento|orcamento|faturamento|logística|logistica|financeiro|fiscal|estado|transição|transicao)\b/i;
@@ -56,6 +57,7 @@ export class MissionOrchestrator {
   }
 
   plan({ objective, project, context = {}, knowledge = {}, activation = false } = {}) {
+    if (isArchitectureAudit(objective)) return planArchitectureAudit({objective,project,context,knowledge,available:this.registry.list(),activation});
     const text = normalize(objective);
     const contextText = normalize([
       project?.name,
