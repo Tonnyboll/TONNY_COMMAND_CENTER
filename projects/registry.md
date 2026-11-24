@@ -7,7 +7,7 @@ Projetos e fontes canônicas verificadas do ecossistema T.O.N.Y.
 | TONNY_COMMAND_CENTER | Orquestração | `Tonnyboll/TONNY_COMMAND_CENTER` | Cérebro, memória persistente e coordenador de agents |
 | Félix | Tecnologia | Catálogo curado local | Contexto arquitetural e de domínio indexado; adaptador de código pendente |
 | TONY Hunter | Financeiro / mercado | Catálogo curado local | Contexto de pesquisa somente leitura indexado; adaptador de código pendente |
-| QDT V2 (Quintal do Tuta / Bot de WhatsApp) | Tecnologia / operações | `Tonnyboll/API_QDT_BOT` | Fonte verificada; V2 Python/FastAPI, Meta bidirecional e matriz Calendar comprovados; Flow dinâmico implementado, homologação pendente |
+| QDT V2 (Quintal do Tuta / Bot de WhatsApp) | Tecnologia / operações | `Tonnyboll/API_QDT_BOT` | Fonte verificada; separação 4 portas em implementação, 8086 leitura DEV integrada no código; sonda e teste integrado pendentes |
 | TonnyBoll Studios | Criativo — braço do TONNY_COMMAND_CENTER | `Tonnyboll/TonnyBoll_Studios` | API/plataforma criativa versionável; abriga TB Lab Kids e TB Lab Stories |
 
 ## Modelo de resolução
@@ -26,7 +26,14 @@ O objetivo deve ser convertido em um plano de conceito, roteiro, takes, prompts,
 
 Adicionar novas fontes, APIs e responsáveis somente após verificação. Contextos pessoal, familiar, saúde e financeiro devem permanecer separados e com acesso mínimo necessário.
 
-## QDT V2 — recuperação canônica (19/11/2026)
+## QDT V2 — recuperação VIGENTE (24/11/2026)
+
+QDT V2: 8083 transporte Meta; 8084 LAB/sonda de arquitetura, dados, integridade e resiliência; 8085 cliente; 8086 proprietário. Uma fonte de verdade por ambiente, sem duplicar regras; LAB não é dependência operacional nem rota pública. 8086 reutiliza interface e read model do LAB, leitura DEV protegida, integrada ao supervisor no código; execução local ainda pendente. Cobertura integral da sonda NÃO comprovada. Ordem obrigatória: completar separação e sonda → testar quatro portas e invariantes, falhas/reconciliação → só após aceite, nova auditoria Codex 10 agentes mesmo SHA → corrigir, validar e consolidar lições. Meta 9,5 é objetivo. CI local-first; uv piloto, lock local ainda não versionado; não generalizar antes da homologação. OTP template pendente. Sem deploy/main QDT/VM.
+
+- Fonte canônica: [CONTEXTO_QDT.md](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md), [handoff](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md) e [contrato de aceite](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_LAB_INTEGRIDADE_RESILIENCIA_2026-11-24.md). Branch exclusiva de trabalho: `feature/qdt-v2-admin-painel`; verificar HEAD antes de executar.
+- [Decisão](../decisions/D-2026-11-24-QDT-sonda.md) e [missão](../missions/M-2026-11-24-QDT-sonda-integridade.md). Histórico abaixo não substitui o checkpoint vigente.
+
+## QDT V2 — checkpoint anterior (histórico; superado acima)
 
 - Alias: QDT, Quintal do Tuta, API_QDT_BOT e Bot de WhatsApp no contexto QDT. Esta identificação substitui o estado anterior de fonte operacional pendente; não atribuir outros bots ao QDT por inferência.
 - Main é referência integrada; frente operacional `feature/qdt-v2-fase0-integracoes`; checkpoint inspecionado em [0ddc5ed](https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md). Consultar o HEAD atual autorizado antes de execução; conteúdo indexado não é consulta ao Git em tempo real.

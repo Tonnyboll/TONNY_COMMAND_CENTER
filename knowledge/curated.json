@@ -186,9 +186,11 @@
         "arquitetura",
         "integrações"
       ],
-      "summary": "API_QDT_BOT é fonte de verdade operacional. V2 substitui execução Docker/n8n/Evolution/Guard por monólito modular Python/FastAPI, SQLite e cofre cifrado; V1 preservada. DEV: receptor 8083 e LAB 8084 privado, túnel HTTPS fixo, bancos separados do ambiente oficial; não presumir runtime ativo. Meta Cloud API, Calendar, Drive, Document AI e OpenAI com credenciais isoladas. Modelo de negócio ainda não aprovado; não criar tabelas de negócio por inferência. Checkpoint canônico na feature, main e VM só com aceite.",
-      "evidenceLevel": "verified_project_checkpoint",
+      "summary": "QDT V2: 8083 transporte Meta; 8084 LAB/sonda de arquitetura, dados, integridade e resiliência; 8085 cliente; 8086 proprietário. Uma fonte de verdade por ambiente, sem duplicar regras; LAB não é dependência operacional nem rota pública. 8086 reutiliza interface e read model do LAB, leitura DEV protegida, integrada ao supervisor no código; execução local ainda pendente. Cobertura integral da sonda NÃO comprovada. Ordem obrigatória: completar separação e sonda → testar quatro portas e invariantes, falhas/reconciliação → só após aceite, nova auditoria Codex 10 agentes mesmo SHA → corrigir, validar e consolidar lições. Meta 9,5 é objetivo. CI local-first; uv piloto, lock local ainda não versionado; não generalizar antes da homologação. OTP template pendente. Sem deploy/main QDT/VM.",
+      "evidenceLevel": "verified_checkpoint_mixed_operator_evidence_pending_validation",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
       ]
@@ -215,9 +217,11 @@
         "segurança",
         "testes"
       ],
-      "summary": "Ciclo real DEV comprovado: entrada assinada, persistência, envio draft, status SENT/DELIVERED/READ, seleção e recebimento nfm_reply no SQLite. HTTP 400 de tela resolvido alinhando JSON cadastrado na Meta ao Git; nfm_reply antes descartado pela allowlist de tipos, corrigido em captura local/test. HTTP 200 isolado não comprova persistência nem entrega. Claim durável, sem replay automático em resultado incerto; sessão opt-in restrita ao contato autorizado, 15 min/20 envios. LAB loopback e Debug sanitizado. Token/resposta ainda não validados para prosseguir negócio.",
-      "evidenceLevel": "real_operator_evidence",
+      "summary": "SAC vigente direciona à plataforma 8085; Flow antigo é histórico. Log do operador 24/11: inbound real observado, claim durável, Meta Graph HTTP 200/ACCEPTED persistido em ~1,9 s; não comprova entrega. OTP HTTP 503 OTP_TEMPLATE_NOT_CONFIGURED; configurar template aprovado pt_BR COPY_CODE, 6 dígitos e validade 5 min. Boas-vindas com foto e botão em modelo separado, nomes sugeridos qdt_boas_vindas/qdt_codigo_acesso. Sem envio falso, duplicidade ou replay cego.",
+      "evidenceLevel": "verified_checkpoint_mixed_operator_evidence_pending_validation",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/commit/36c54f4204f19268ec0857cfbc7d1f764d24d009"
       ]
@@ -272,9 +276,11 @@
         "contrato",
         "homologação"
       ],
-      "summary": "Implementado na feature, não homologado no aparelho: antes de cada FLOW_DRAFT consultar matriz Google nova; min_date/max_date e unavailable_dates via payload, janela proposta 90 dias desde amanhã. Apenas limites e datas ISO, sem títulos/IDs de eventos; falha Google ou janela cheia impede POST Meta. Sem cache/fallback fictício; preço segue ilustrativo. Snapshot atualiza no novo envio, não na abertura de mensagem antiga. Próximo gate: testes offline, salvar JSON dinâmico no mesmo draft Meta, validar schema/preview, reiniciar LAB e testar no celular. Não publicar. Próximo passo após captura: correlacionar token/sessão/contato, expiração, esquema, idempotência e reconsultar data; data_exchange protegido se necessário.",
-      "evidenceLevel": "implemented_not_yet_validated",
+      "summary": "Histórico: WhatsApp Flow dinâmico foi fase anterior. SAC encaminha ao produto cliente 8085, consulta real fail-closed. Disponibilidade, preço e vídeo HTTP 200 reportados em 24/11. Revalidar datas antes de transação; reconciliar efeitos Google. Nenhum Flow novo como rota comercial.",
+      "evidenceLevel": "verified_checkpoint_mixed_operator_evidence_pending_validation",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/flows/agenda-homologacao.json",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/qdt_v2/integrations/meta_live_client.py",
@@ -303,9 +309,11 @@
         "proprietários",
         "modelo de dados"
       ],
-      "summary": "IA coleta/interpreta, API aplica regras determinísticas, proprietários validam e administram; OCR não comprova pagamento. Google Calendar tem relevância operacional de ocupação/reconciliação; banco QDT é autoridade de regras/financeiro. Layout Google aprovado: título Nome - Valor total, descrição Valor do sinal, período nativo; detalhes e controles somente na plataforma administrativa. Selecionar não é reservar; pré-reserva 2h só com intenção explícita, confirmação por proprietário. Cadastro único, remarcação/atualização por ID estável e cancelamento autorizado, sem duplicar ou apagar legado. Escrita, concorrência, expiração e reconciliação ainda futuros e dependem de modelo aprovado. Alertas push iniciais só evento/reserva/pagamento. Tarifas e cores ainda requerem regras aprovadas.",
-      "evidenceLevel": "approved_design_not_implemented",
+      "summary": "Núcleo transacional e modelo aditivo versionados; reserva, ocupação, pagamento, caixa, outbox e Google verificado. 20 s homologação, 5 min futura produção. Simulador LAB não comprova crédito bancário. 8086 compartilha projeção real do banco isolado somente leitura, sem privilégio operacional. Cliente autenticado solicita cancelamento/remarcação, pendente de decisão; sem estorno, reprecificação ou alteração externa automática. Regras comerciais e autenticação/ações proprietário pendentes; regime caixa e fechamento 50/50 preservados.",
+      "evidenceLevel": "verified_checkpoint_mixed_operator_evidence_pending_validation",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESCOPO_FUNCIONAL_CONSOLIDADO.md"
       ]
@@ -331,9 +339,11 @@
         "release",
         "documentação"
       ],
-      "summary": "Meta bidirecional e leitura Calendar reais comprovadas; Drive autenticação/leitura, Document AI OCR sintético e OpenAI inferência de teste comprovados individualmente, não integrados ao atendimento. Seis testes de matriz passaram localmente; operador aceitou matriz posterior; não há log completo dos nove nem regressão da integração Flow dinâmica. Baseline CI anterior ao Flow dinâmico não prova revisão atual. Não repetir operações externas sem necessidade; sem gravação real de Calendar ou promoção main/VM. Atualizar documentação e checkpoint a cada achado/implementação, associando evidência, commit, limitações e próxima ação. Retomar pela seção vigente do handoff.",
-      "evidenceLevel": "mixed_verified_and_pending",
+      "summary": "24/11: uv 0.13.9/Python 3.14.7, 31 instalados, 32 resolvidos, segunda resolução 49 ms e check 8 ms, sem reinstalação, conforme operador. Sem comparação pip nem economia CI comprovada. Preflight 8 OK/2 pendentes, inbound e SAC aceito Meta; OTP template ausente. 8086 código integrado, teste Windows e cobertura transversal pendentes. CI hospedado bloqueado por faturamento; regressão local obrigatória. Nova auditoria Codex 10 agentes somente após aceite integrado; baseline anterior 4,75/8,40, mesmo SHA anterior não confirmado. Sem produção, promoção main QDT ou VM.",
+      "evidenceLevel": "verified_checkpoint_mixed_operator_evidence_pending_validation",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
       ]
@@ -402,6 +412,42 @@
       "sources": [
         "decisions/D-2026-11-24-CI-local-first.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/actions/runs/45389158783"
+      ]
+    },
+    {
+      "id": "qdt-lab-integrity-resilience",
+      "title": "QDT LAB — sonda central de integridade e resiliência",
+      "project": "QDT V2",
+      "projects": [
+        "API_QDT_BOT",
+        "Quintal do Tuta"
+      ],
+      "domain": "technology",
+      "domains": [
+        "engineering",
+        "software_architecture",
+        "quality"
+      ],
+      "tags": [
+        "QDT",
+        "8083",
+        "8084",
+        "8085",
+        "8086",
+        "LAB",
+        "observabilidade",
+        "resiliência",
+        "integridade",
+        "quality gate",
+        "Codex",
+        "uv"
+      ],
+      "summary": "QDT V2: 8083 transporte Meta; 8084 LAB/sonda de arquitetura, dados, integridade e resiliência; 8085 cliente; 8086 proprietário. Uma fonte de verdade por ambiente, sem duplicar regras; LAB não é dependência operacional nem rota pública. 8086 reutiliza interface e read model do LAB, leitura DEV protegida, integrada ao supervisor no código; execução local ainda pendente. Cobertura integral da sonda NÃO comprovada. Ordem obrigatória: completar separação e sonda → testar quatro portas e invariantes, falhas/reconciliação → só após aceite, nova auditoria Codex 10 agentes mesmo SHA → corrigir, validar e consolidar lições. Meta 9,5 é objetivo. CI local-first; uv piloto, lock local ainda não versionado; não generalizar antes da homologação. OTP template pendente. Sem deploy/main QDT/VM.",
+      "evidenceLevel": "approved_contract_implementation_and_validation_pending",
+      "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/CONTEXTO_QDT.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_LAB_INTEGRIDADE_RESILIENCIA_2026-11-24.md"
       ]
     }
   ]

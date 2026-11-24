@@ -192,3 +192,10 @@ Fonte de evidência: [checkpoint QDT em 0ddc5ed](https://github.com/Tonnyboll/AP
 | Quality gate por evidência e checkpoint permanente | APROVADA pelo proprietário no QDT | qa-specialist, implementation-agent, architect-review | Cada marco relevante documenta fonte, evidência, commit, limitações e retomada. |
 
 Conhecimento recuperável: entradas `qdt-*`, `signed-event-delivery-and-durable-claims` e `legacy-aware-availability-snapshots` em `knowledge/curated.json`. Reutilizar o registry existente (`src/core/registry.js`); não criar agentes duplicados. Os agentes acima são rotas de planejamento já disponíveis, não alegação de execução autônoma de ferramentas.
+
+## Piloto QDT — sonda e testes inteligentes (24/11/2026)
+
+- Sonda de arquitetura e dados (observability-engineer, architect-review, database-architect, security-auditor, devops-troubleshooter): contrato aprovado; instrumentação/cobertura integral, reconciliação e resiliência pendentes. Não classificar como capacidade homologada.
+- Quality Gate com análise de impacto (qa-specialist/test-automator, code-reviewer): proposta aprovada, implementação e validação pendentes. Fallback regressão completa, evidência por SHA/hash e lock, sem reduzir testes.
+- uv (implementation-agent, performance-engineer): piloto instalado, medidas locais registradas; lock versionado e aceite integral pendentes. Não impor a outros projetos antes da homologação.
+- Auditoria oficial: 10 agentes existentes via Codex local, somente após aprovação do teste integrado das quatro portas. [Fonte](https://github.com/Tonnyboll/API_QDT_BOT/blob/635b80825a584326cb3065643cdcd7cd3b03a400/docs/QDT_V2_HANDOFF_SONDA_2026-11-24.md).
