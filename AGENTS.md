@@ -143,6 +143,18 @@ Para QDT V2, Bot de WhatsApp / Quintal do Tuta, seguir o registro em `projects/r
 
 Selecionar a menor equipe suficiente por capacidade, reaproveitando os agentes existentes. Auditoria oficial de arquitetura exige dez pareceres no mesmo snapshot, em leitura: arquitetura, banco, backend, segurança, testes, performance, código, contexto, DevOps e observabilidade. Registrar execução efetiva, evidências arquivo/linha, riscos, impacto, esforço, nota atual/potencial e cobertura; falhas sem nota, repetir somente os faltantes. Usar modelo compatível; herdar configuração do executor se necessário. Não iniciar implementação após auditoria parcial. Não duplicar papéis: qa-specialist corresponde ao test-automator. O catálogo não executa agentes por si; verificar adaptador e permissões antes de afirmar execução. Codex e agentes são engenharia, nunca dependências da VM de negócio. Referência: projects/capabilities.md e decisions/D-2026-11-23-QDT-audit.md.
 
+## Validação local e controle de custos de CI (24/11/2026)
+
+Regra global para todos os projetos tecnológicos: enquanto o GitHub Actions hospedado estiver bloqueado por faturamento/orçamento, manter GitHub para versionamento e executar os testes localmente, sem depender de CI remoto para avançar. Não aumentar orçamento, alterar cartão, contratar plano, tornar repositório público ou liberar cobrança sem autorização explícita.
+
+- Reaproveitar a suíte e o comando oficial de cada projeto. QDT: `git pull` e `.\qdt.ps1 -Testar` (PowerShell).
+- Não reduzir cobertura, desabilitar testes, falsificar sucesso, ignorar proteção de branch nem liberar produção sem evidência suficiente. Registrar commit testado, ambiente, comando, resultados e pendências, incluindo integração e segurança proporcionais ao risco.
+- Se não houver executor local conectado, solicitar execução ao operador e analisar o retorno. Inspeção estática não equivale a teste executado.
+- Distinguir CI indisponível por infraestrutura/faturamento de falha de código; manter estado **CI REMOTO BLOQUEADO / VALIDAÇÃO LOCAL PENDENTE** até obter evidências locais. Após os testes locais comprovados, o gate pode ser satisfeito por essa evidência equivalente, respeitando proteções existentes e autorização de release.
+- Quando o usuário regularizar o faturamento e autorizar retomada, conferir runner-probe e regressão; preferir CI em marcos, PRs e integração da main, cancelando execuções obsoletas quando aplicável. Não remover workflows nem alterar triggers de outros projetos sem escopo autorizado.
+
+Fonte: [decisão global](decisions/D-2026-11-24-CI-local-first.md).
+
 ## Limites atuais
 
 Este protocolo orienta o trabalho neste projeto e nesta conversa. Ele não muda automaticamente outras conversas, não concede acesso a aplicativos e não cria monitoramento contínuo. Cada integração precisa ser configurada e verificada.

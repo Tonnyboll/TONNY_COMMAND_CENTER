@@ -110,10 +110,11 @@
         "coverage",
         "release"
       ],
-      "summary": "Manter testes unitários e E2E, contratos e coleções atualizados, quality gate por bloco funcional e evidências de homologação. Só promover uma versão com CI verde e validação real do fluxo.",
+      "summary": "Manter testes unitários e E2E, contratos e coleções atualizados, quality gate por bloco funcional e evidências de homologação. Promover somente com evidências de testes equivalentes e validação real; CI verde quando disponível. Durante bloqueio de faturamento, aplicar contingência local-first aprovada, sem contornar proteções de branch ou reduzir critérios.",
       "evidenceLevel": "curated",
       "sources": [
-        "CI, test, Postman and release documents"
+        "CI, test, Postman and release documents",
+        "decisions/D-2026-11-24-CI-local-first.md"
       ]
     },
     {
@@ -409,6 +410,32 @@
       "sources": [
         "https://github.com/wshobson/agents",
         "https://github.com/Tonnyboll/TONNY_COMMAND_CENTER/blob/feature/qdt-intelligence-sync/decisions/D-2026-11-23-QDT-audit.md"
+      ]
+    },
+    {
+      "id": "ci-local-first-billing-contingency",
+      "title": "CI local-first durante bloqueio de faturamento do GitHub Actions",
+      "domain": "delivery",
+      "domains": [
+        "engineering",
+        "technology",
+        "quality"
+      ],
+      "tags": [
+        "github",
+        "actions",
+        "ci",
+        "testes",
+        "local",
+        "custos",
+        "release",
+        "faturamento"
+      ],
+      "summary": "Regra global aprovada em 24/11/2026: GitHub para versionamento, suíte local obrigatória enquanto CI hospedado estiver bloqueado por faturamento. QDT: git pull e .\\qdt.ps1 -Testar. Registrar SHA, comandos, ambiente e resultados; sem evidência não declarar validado. Não gastar, ignorar proteções ou reduzir testes; produção exige evidências equivalentes e autorização. Retomar CI só após regularização e autorização; preferir marcos, PRs e main. Não inferir dívida. Executor local não presumido.",
+      "evidenceLevel": "approved_operational_policy",
+      "sources": [
+        "decisions/D-2026-11-24-CI-local-first.md",
+        "https://github.com/Tonnyboll/API_QDT_BOT/actions/runs/45389158783"
       ]
     }
   ]
