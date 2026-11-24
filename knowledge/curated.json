@@ -185,9 +185,10 @@
         "arquitetura",
         "integrações"
       ],
-      "summary": "API_QDT_BOT é fonte de verdade operacional. V2 substitui execução Docker/n8n/Evolution/Guard por monólito modular Python/FastAPI, SQLite e cofre cifrado; V1 preservada. DEV: receptor 8083 e LAB 8084 privado, túnel HTTPS fixo, bancos separados do ambiente oficial; não presumir runtime ativo. Meta Cloud API, Calendar, Drive, Document AI e OpenAI com credenciais isoladas. Modelo de negócio ainda não aprovado; não criar tabelas de negócio por inferência. Checkpoint canônico na feature, main e VM só com aceite.",
+      "summary": "Fonte vigente API_QDT_BOT, feature/qdt-v2-admin-painel. DEV receptor 8083, LAB privado 8084, cliente 8085, mesma aplicação cliente e assets; qdt.ps1 terminal único. Google disponibilidade + ocupação local, preço e Drive leitura real. Identidade/reserva/pagamento/caixa integrados pendentes. Monólito modular e SQLite único por ambiente recomendação preliminar da auditoria, modelo físico em avaliação. Legado preservado, não presumir retirada de Docker/n8n/Redis/Postgres nem VM pronta.",
       "evidenceLevel": "verified_project_checkpoint",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
       ]
@@ -214,9 +215,10 @@
         "segurança",
         "testes"
       ],
-      "summary": "Ciclo real DEV comprovado: entrada assinada, persistência, envio draft, status SENT/DELIVERED/READ, seleção e recebimento nfm_reply no SQLite. HTTP 400 de tela resolvido alinhando JSON cadastrado na Meta ao Git; nfm_reply antes descartado pela allowlist de tipos, corrigido em captura local/test. HTTP 200 isolado não comprova persistência nem entrega. Claim durável, sem replay automático em resultado incerto; sessão opt-in restrita ao contato autorizado, 15 min/20 envios. LAB loopback e Debug sanitizado. Token/resposta ainda não validados para prosseguir negócio.",
+      "summary": "Marco 23/11: SAC WhatsApp real, link para portal; envio Meta HTTP 200, ACCEPTED persistido e SENT/DELIVERED/READ correlacionados (operador). Número autorizado único, executor único, não ativar BIIC/LiveExchange simultaneamente; preservar histórico e marco zero. Flow e nfm_reply são marcos históricos, não rota de negócio vigente. Sem replay cego nem confundir HTTP 200 com entrega.",
       "evidenceLevel": "real_operator_evidence",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/commit/36c54f4204f19268ec0857cfbc7d1f764d24d009"
       ]
@@ -271,9 +273,10 @@
         "contrato",
         "homologação"
       ],
-      "summary": "Implementado na feature, não homologado no aparelho: antes de cada FLOW_DRAFT consultar matriz Google nova; min_date/max_date e unavailable_dates via payload, janela proposta 90 dias desde amanhã. Apenas limites e datas ISO, sem títulos/IDs de eventos; falha Google ou janela cheia impede POST Meta. Sem cache/fallback fictício; preço segue ilustrativo. Snapshot atualiza no novo envio, não na abertura de mensagem antiga. Próximo gate: testes offline, salvar JSON dinâmico no mesmo draft Meta, validar schema/preview, reiniciar LAB e testar no celular. Não publicar. Próximo passo após captura: correlacionar token/sessão/contato, expiração, esquema, idempotência e reconsultar data; data_exchange protegido se necessário.",
-      "evidenceLevel": "implemented_not_yet_validated",
+      "summary": "Histórico 19/11: Flow dinâmico consultava matriz Google; não é a próxima etapa vigente. SAC agora encaminha à plataforma compartilhada 8084/8085, consulta real de disponibilidade, fail closed, sem fallback fictício. Revalidar data antes de transação e reconciliar Google. Preservar histórico e não publicar Flow automaticamente.",
+      "evidenceLevel": "historical_superseded",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/flows/agenda-homologacao.json",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/qdt_v2/integrations/meta_live_client.py",
@@ -302,9 +305,10 @@
         "proprietários",
         "modelo de dados"
       ],
-      "summary": "IA coleta/interpreta, API aplica regras determinísticas, proprietários validam e administram; OCR não comprova pagamento. Google Calendar tem relevância operacional de ocupação/reconciliação; banco QDT é autoridade de regras/financeiro. Layout Google aprovado: título Nome - Valor total, descrição Valor do sinal, período nativo; detalhes e controles somente na plataforma administrativa. Selecionar não é reservar; pré-reserva 2h só com intenção explícita, confirmação por proprietário. Cadastro único, remarcação/atualização por ID estável e cancelamento autorizado, sem duplicar ou apagar legado. Escrita, concorrência, expiração e reconciliação ainda futuros e dependem de modelo aprovado. Alertas push iniciais só evento/reserva/pagamento. Tarifas e cores ainda requerem regras aprovadas.",
-      "evidenceLevel": "approved_design_not_implemented",
+      "summary": "Cliente verificado por celular, nome/RG protegidos; cliente cria reserva, proprietário administra e decide pagamento manual. 20 segundos homologação e 5 minutos futura produção, 2h somente legado. Não efetuado/expirado libera ocupação própria, sem receita, notificação WhatsApp única; aprovação tardia exige reconciliação. Efetuado registra caixa homologação e reserva, Google verificado antes da confirmação; não comprova crédito bancário. Reservar, alterar, cancelar, consultar saldo e financeiro sobre domínio único. Regime de caixa, fechamento 50/50, histórico preservado. Modelo físico pendente.",
+      "evidenceLevel": "approved_design_not_integrated",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESCOPO_FUNCIONAL_CONSOLIDADO.md"
       ]
@@ -330,9 +334,10 @@
         "release",
         "documentação"
       ],
-      "summary": "Meta bidirecional e leitura Calendar reais comprovadas; Drive autenticação/leitura, Document AI OCR sintético e OpenAI inferência de teste comprovados individualmente, não integrados ao atendimento. Seis testes de matriz passaram localmente; operador aceitou matriz posterior; não há log completo dos nove nem regressão da integração Flow dinâmica. Baseline CI anterior ao Flow dinâmico não prova revisão atual. Não repetir operações externas sem necessidade; sem gravação real de Calendar ou promoção main/VM. Atualizar documentação e checkpoint a cada achado/implementação, associando evidência, commit, limitações e próxima ação. Retomar pela seção vigente do handoff.",
+      "summary": "23/11: SAC real, disponibilidade, vídeo e preço no LAB comprovados; Pix 403 por trava pré-autenticação; identificação sem persistência. Debug externo 8085 pendente. Política de prazo versionada sem rotas/worker/banco. Aceite apenas integral: reserva, alteração, cancelamento, pagamentos, caixa, Google e WhatsApp, sem demos. Auditoria estática parcial 6/10, 5,1 atual/8,4 potencial, quatro faltantes. Sem deploy, migrations ou confirmação real de pagamento; consultar CONTEXTO_QDT.md.",
       "evidenceLevel": "mixed_verified_and_pending",
       "sources": [
+        "https://github.com/Tonnyboll/API_QDT_BOT/blob/f4590484719b1c4f182d9da6716afdae7c375b05/CONTEXTO_QDT.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md",
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/v2/README.md"
       ]
@@ -375,6 +380,32 @@
       "evidenceLevel": "verified_read_pattern_write_pending",
       "sources": [
         "https://github.com/Tonnyboll/API_QDT_BOT/blob/0ddc5ed75de40ce86c7acf9bd86503ab270e9fcd/docs/QDT_V2_ESTADO_ATUAL_HANDOFF_2026-11-18.md"
+      ]
+    },
+    {
+      "id": "engineering-specialist-audit",
+      "title": "Auditoria multidisciplinar de arquitetura wshobson",
+      "domain": "engineering",
+      "domains": [
+        "technology",
+        "software_architecture",
+        "quality"
+      ],
+      "tags": [
+        "auditoria",
+        "arquitetura",
+        "agentes",
+        "wshobson",
+        "Codex",
+        "banco",
+        "testes",
+        "segurança"
+      ],
+      "summary": "Equipe mínima por capacidade; auditoria oficial com dez perfis no mesmo commit em leitura, evidência arquivo/linha, risco, impacto, esforço, notas e cobertura; repetir apenas faltantes, não inventar execução. Modelos compatíveis herdados. Catálogo não é executor; adaptador externo pendente. Ferramentas de engenharia não vão à VM. Sincronizar contexto a cada marco.",
+      "evidenceLevel": "approved_protocol_executor_pending",
+      "sources": [
+        "https://github.com/wshobson/agents",
+        "https://github.com/Tonnyboll/TONNY_COMMAND_CENTER/blob/feature/qdt-intelligence-sync/decisions/D-2026-11-23-QDT-audit.md"
       ]
     }
   ]

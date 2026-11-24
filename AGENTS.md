@@ -139,6 +139,10 @@ Em contexto formal ativado, ao fechar implementação ou achado importante, atua
 
 Para QDT V2, Bot de WhatsApp / Quintal do Tuta, seguir o registro em `projects/registry.md` e o handoff vigente de `Tonnyboll/API_QDT_BOT`. Reutilizar agentes existentes conforme escopo, sem duplicar as regras do domínio. Main e ambientes oficiais permanecem protegidos até autorização e validação.
 
+## Especialistas de engenharia — padrão wshobson (23/11/2026)
+
+Selecionar a menor equipe suficiente por capacidade, reaproveitando os agentes existentes. Auditoria oficial de arquitetura exige dez pareceres no mesmo snapshot, em leitura: arquitetura, banco, backend, segurança, testes, performance, código, contexto, DevOps e observabilidade. Registrar execução efetiva, evidências arquivo/linha, riscos, impacto, esforço, nota atual/potencial e cobertura; falhas sem nota, repetir somente os faltantes. Usar modelo compatível; herdar configuração do executor se necessário. Não iniciar implementação após auditoria parcial. Não duplicar papéis: qa-specialist corresponde ao test-automator. O catálogo não executa agentes por si; verificar adaptador e permissões antes de afirmar execução. Codex e agentes são engenharia, nunca dependências da VM de negócio. Referência: projects/capabilities.md e decisions/D-2026-11-23-QDT-audit.md.
+
 ## Limites atuais
 
 Este protocolo orienta o trabalho neste projeto e nesta conversa. Ele não muda automaticamente outras conversas, não concede acesso a aplicativos e não cria monitoramento contínuo. Cada integração precisa ser configurada e verificada.

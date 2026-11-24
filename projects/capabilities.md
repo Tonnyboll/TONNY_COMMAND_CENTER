@@ -192,3 +192,23 @@ Fonte de evidência: [checkpoint QDT em 0ddc5ed](https://github.com/Tonnyboll/AP
 | Quality gate por evidência e checkpoint permanente | APROVADA pelo proprietário no QDT | qa-specialist, implementation-agent, architect-review | Cada marco relevante documenta fonte, evidência, commit, limitações e retomada. |
 
 Conhecimento recuperável: entradas `qdt-*`, `signed-event-delivery-and-durable-claims` e `legacy-aware-availability-snapshots` em `knowledge/curated.json`. Reutilizar o registry existente (`src/core/registry.js`); não criar agentes duplicados. Os agentes acima são rotas de planejamento já disponíveis, não alegação de execução autônoma de ferramentas.
+
+
+## Especialistas wshobson — engenharia (23/11/2026)
+
+Fonte: [wshobson/agents](https://github.com/wshobson/agents). Dez TOML instalados no Codex CLI 0.172.0 conforme operador; seis pareceres entregues, quatro incompatibilidades de modelo corrigidas, nova execução pendente. Registro não comprova executor conectado. Reutilizar papéis canônicos, sem duplicar existentes.
+
+| Papel | Perfil externo | Foco |
+|---|---|---|
+| architect-review | comprehensive-review__architect-review | Arquitetura |
+| database-architect | database-design__database-architect | Dados |
+| backend-architect | backend-development__backend-architect | Backend |
+| security-auditor | security-scanning__security-auditor | Segurança |
+| qa-specialist | backend-development__test-automator | Testes |
+| performance-engineer | application-performance__performance-engineer | Performance |
+| code-reviewer | comprehensive-review__code-reviewer | Código |
+| context-manager | context-management__context-manager | Contexto |
+| devops-troubleshooter | incident-response__devops-troubleshooter | DevOps |
+| observability-engineer | observability-monitoring__observability-engineer | Observabilidade |
+
+Rotas: engenharia QDT, Félix, Chave Perto e demais projetos autorizados. Escolher equipe mínima na rotina; dez no gate oficial. Codex local é executor do operador, adaptador central pendente. Nunca instalar na VM de negócio. [Protocolo](../decisions/D-2026-11-23-QDT-audit.md).
